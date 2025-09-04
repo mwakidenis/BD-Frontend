@@ -70,10 +70,10 @@ export default function Navbar() {
               >
                 <Link
                   href={link.href}
-                  className="text-gray-700 hover:text-teal-600 font-medium transition-colors duration-200 relative group"
+                  className="text-gray-700 hover:text-teal-800 font-medium transition-colors duration-200 relative group"
                 >
                   {link.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-600 group-hover:w-full transition-all duration-200"></span>
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-teal-800 group-hover:w-full transition-all duration-200"></span>
                 </Link>
               </motion.div>
             ))}
@@ -94,7 +94,7 @@ export default function Navbar() {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-gray-700 hover:text-teal-600 transition-colors"
+            className="md:hidden p-2 text-gray-700 hover:text-teal-800 transition-colors"
           >
             <motion.div
               animate={{ rotate: isMobileMenuOpen ? 180 : 0 }}
@@ -129,7 +129,7 @@ export default function Navbar() {
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
                   >
-                    <link.icon size={20} className="text-teal-600" />
+                    <link.icon size={20} className="text-teal-800" />
                     <span className="font-medium text-gray-700">
                       {link.name}
                     </span>
@@ -148,7 +148,7 @@ export default function Navbar() {
                   href="/dashboard"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white">
+                  <Button className="w-full bg-teal-800 hover:bg-teal-700 text-white">
                     Dashboard
                   </Button>
                 </Link>

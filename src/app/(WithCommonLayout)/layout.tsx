@@ -5,9 +5,8 @@ import { usePathname } from "next/navigation";
 import React from "react";
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
   return (
-    <main className="min-h-screen">
+    <main>
       <Navbar />
       <div className=" relative">{children}</div>
     </main>

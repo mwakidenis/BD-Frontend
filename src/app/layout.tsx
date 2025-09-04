@@ -1,21 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Suspense } from "react";
+import { Toaster } from "sonner";
+import { Poppins } from "next/font/google";
+// import Providers from "../providers/Providers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const poppinsClassName: string = poppins.className;
 
 export const metadata: Metadata = {
-  title: "Soptokbd",
+  title: "SoptokBD",
   description: "",
+  keywords: [""],
+  referrer: "origin-when-cross-origin",
+  robots: "index, follow",
+  publisher: "",
+  authors: [
+    {
+      name: "Ishtiak Ahmed",
+    },
+  ],
+  creator: "Ishtiak Ahmed",
 };
 
 export default function RootLayout({
@@ -25,13 +34,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.className} ${geistMono.className} antialiased`}
-      >
-        <Suspense>
-          {/* <Providers>{children}</Providers> */}
-          {children}
-        </Suspense>
+      <body className={`${poppinsClassName}`}>
+        {/* <Providers> */}
+        {children}
+        <Toaster position="top-center" />
+        {/* </Providers> */}
       </body>
     </html>
   );
