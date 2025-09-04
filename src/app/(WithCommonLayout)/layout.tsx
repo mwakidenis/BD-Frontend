@@ -1,14 +1,20 @@
 "use client";
 
 import Navbar from "@/components/home/Navbar";
-import { usePathname } from "next/navigation";
+import Footer from "@/components/Shared/Footer";
 import React from "react";
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <main>
-      <Navbar />
+      <div>
+        <Navbar />
+      </div>
+
       <div className=" relative">{children}</div>
+      <div>
+        <Footer />
+      </div>
     </main>
   );
 };
