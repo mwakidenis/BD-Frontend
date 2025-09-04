@@ -14,6 +14,15 @@
   scrollbar-width: none;
 }
 
+/* parallex section */
+.bgImage {
+  background-image: url("../assets/imagemain.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
 /* for banner section */
 #app {
   height: 100%;
