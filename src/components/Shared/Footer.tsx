@@ -17,7 +17,10 @@ const Footer = () => {
         <div className="text-center sm:text-left">
           <Link href="/">
             <h1 className="text-xl sm:text-2xl font-semibold">
-              Soptok<span className="text-black">BD</span>
+              Soptok
+              <span className="text-black text-xl sm:text-2xl font-semibold">
+                BD
+              </span>
             </h1>
           </Link>
           <p className="mt-3 text-sm leading-relaxed max-w-xs mx-auto sm:mx-0">
