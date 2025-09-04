@@ -1,0 +1,1 @@
+export const protectedRoutes = ['/login', "/cart", "/admin", "/admin/:page", "/user", "/user/:page"]
