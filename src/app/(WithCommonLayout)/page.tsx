@@ -3,6 +3,7 @@
 import Banner from "@/components/home/Banner";
 import Categories from "@/components/home/Categories";
 import ExploreNow from "@/components/home/ExploreNow";
+import ProductSection from "@/components/home/Products";
 import ProductShowcase from "@/components/home/ProductShowcase";
 import React from "react";
 
@@ -17,6 +18,9 @@ const HomePage = async () => {
       </div>
       <div>
         <Categories />
+      </div>
+      <div>
+        <ProductSection />
       </div>
       <div>
         <ExploreNow />
