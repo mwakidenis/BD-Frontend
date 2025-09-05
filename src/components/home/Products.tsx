@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
+import { motion } from "framer-motion";
 
 // --- Fake SoptokBD Products ---
 const fakeProducts = [
@@ -75,7 +76,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div
-      className="h-[350px] mb-12 group relative overflow-hidden"
+      className="h-[360px] mb-12 group relative overflow-hidden"
       style={{ backgroundColor: "rgb(234 234 234)" }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -94,7 +95,7 @@ const ProductCard = ({ product }) => {
       ></div>
 
       {/* Product Name */}
-      <div className="h-[50px] bg-[rgb(234_234_234)] w-full font-clashSemibold text-center">
+      <div className="h-[50px] bg-[rgb(234_234_234)] w-full font-medium py-2 text-center">
         {product.name}
       </div>
 
@@ -106,12 +107,12 @@ const ProductCard = ({ product }) => {
       >
         {/* Product Information */}
         <div
-          className={`text-center text-white bg-black/60 px-4 py-2 rounded-lg ${
+          className={`text-center text-white bg-black/60 px-4 py-2 ${
             hover ? "opacity-100" : "opacity-0"
           } duration-300`}
         >
           <p className="text-sm font-semibold mb-1">{product.category}</p>
-          <p className="text-lg font-bold mb-1">৳{product.price}</p>
+          <p className="text-lg font-bold mb-1">৳ {product.price}</p>
           <p className="text-sm">
             Stock: {product.stock}{" "}
             {product.stock <= 5 ? "Stock shimito" : "Available"}
@@ -153,13 +154,28 @@ export default function ProductSection() {
   return (
     <section className="py-16 px-6 md:px-20">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-        Explore Our Handmade Collections
+        Explore Our Collections
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {fakeProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
+      </div>
+
+      <div>
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <button className="bg-black hover:from-blue-900  text-white font-semibold px-10 py-4  shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+            Browse Your Collection
+          </button>
+        </motion.div>
       </div>
     </section>
   );
