@@ -28,7 +28,7 @@ const ExploreNow = () => {
           </p>
           <Link href="/">
             <button className="hover:cursor-pointer px-6 py-2 font-medium transition-all duration-300 hover:bg-gray-400 bg-white text-black shadow-md">
-              Explore now
+              Register now
             </button>
           </Link>
         </div>
