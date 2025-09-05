@@ -3,6 +3,7 @@
 import Banner from "@/components/home/Banner";
 import Categories from "@/components/home/Categories";
 import ExploreNow from "@/components/home/ExploreNow";
+import NewArrivalsSection from "@/components/home/NewArrivals";
 import ProductSection from "@/components/home/Products";
 import ProductShowcase from "@/components/home/ProductShowcase";
 import React from "react";
@@ -21,6 +22,9 @@ const HomePage = async () => {
       </div>
       <div>
         <ProductSection />
+      </div>
+      <div>
+        <NewArrivalsSection />
       </div>
       <div>
         <ExploreNow />
