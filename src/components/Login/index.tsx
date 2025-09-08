@@ -56,7 +56,7 @@ const Login = () => {
           </Button>
         </form>
 
-        <div className="mt-4 divider">or</div>
+        <div className="mt-4 divider">OR</div>
 
         <p className="text-[12px] md:text-sm mb-8">
           Don&apos;t have an account?{" "}
