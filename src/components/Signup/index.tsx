@@ -3,15 +3,19 @@
 import React from "react";
 import Input2 from "../ui/Input2";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const Signup = () => {
   return (
     <div className="h-screen min-h-[500px] w-[95%] mx-auto grid grid-cols-1 lg:grid-cols-2">
       {/* Left Side */}
-      <div className="hidden lg:block my-[2.5%] min-h-[500px] bg-login relative">
-        <p className="text-lg font-clashBold sm:text-xl absolute top-[2%] left-[5%] underline cursor-pointer text-white">
+      <div className="hidden lg:block my-[2.5%] min-h-[500px] bg-signup relative">
+        <Link
+          href={"/"}
+          className="text-lg font-clashBold sm:text-xl absolute top-[2%] left-[5%] cursor-pointer text-white"
+        >
           SoptokBD
-        </p>
+        </Link>
 
         <div className="absolute w-full bottom-[10%] left-[5%] text-white">
           <h2 className="text-4xl">
