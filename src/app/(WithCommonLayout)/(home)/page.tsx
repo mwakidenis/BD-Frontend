@@ -7,6 +7,7 @@ import ExploreNow from "@/components/home/ExploreNow";
 import NewArrivalsSection from "@/components/home/NewArrivals";
 import ProductSection from "@/components/home/Products";
 import ProductShowcase from "@/components/home/ProductShowcase";
+import ShopNow from "@/components/home/ShopWithLogin";
 import React from "react";
 
 const HomePage = async () => {
@@ -23,6 +24,9 @@ const HomePage = async () => {
       </div>
       <div>
         <ProductSection />
+      </div>
+      <div>
+        <ShopNow />
       </div>
       <div>
         <NewArrivalsSection />

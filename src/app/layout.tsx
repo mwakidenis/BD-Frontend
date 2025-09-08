@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   publisher: "",
   authors: [
     {
-      name: "Ishtiak Ahmed",
+      name: "SoptokBD",
     },
   ],
   creator: "Ishtiak Ahmed",
