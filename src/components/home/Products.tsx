@@ -1,13 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
-// --- Fake SoptokBD Products ---
-const fakeProducts = [
+// --- Types ---
+type Product = {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  images: string[];
+};
+
+type ProductCardProps = {
+  product: Product;
+};
+
+// --- Fake Products ---
+const fakeProducts: Product[] = [
   {
     id: "1",
     name: "Handmade Jute Rug",
@@ -15,7 +28,7 @@ const fakeProducts = [
     price: 1200,
     stock: 8,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/533009442_122104364546973943_2904521196908557415_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeED2jotRDyOJbUUJw-uyqaYwI5CvYmbs0DAjkK9iZuzQKpubE6bJJa-beTi5-s1IzM7cWuuC-pMVXf8quTcsosZ&_nc_ohc=W2a04iegKFwQ7kNvwHS67FV&_nc_oc=Adlc8QnpMFZnPZFFCAwNM_Q09NvT0ftoRbomgk4X-II1bu3iVBY2Xy6ubSWbeWen8ik&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=7CrumKexDfBbi-8eu-Ty3g&oh=00_Afby540kUvvGg2SnhsfX6Btz1VvxJKu6kY1Gpjadavm4Zg&oe=68C03FB0",
+      "https://images.unsplash.com/photo-1680777019951-9cc1abaa0471?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     ],
   },
   {
@@ -25,7 +38,7 @@ const fakeProducts = [
     price: 950,
     stock: 15,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/542714379_122115311192973943_6893585986170167570_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGX3N_EdfWrtdlB34c-sS9kzAMPEuE7SI_MAw8S4TtIj9HKu5PH9NJkZbEFvhtieDGqy6NhrImgg8hAZiaC7OsQ&_nc_ohc=bWNOYQfIitIQ7kNvwGbs0vh&_nc_oc=AdmvMP0iB0-q54c-ABuUNggl3v240OxpoKXQjSjUJmDfl9-dKm2uKESZDXlVKwpp7Dw&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=YrDUSIVK2MsZYrex8I-W7g&oh=00_Afa1cejoMcV_YkOQfvXNvj8ufR_EpCQVAkYRmLsNq6vuOQ&oe=68C051B2",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/547025259_122117484296973943_4735552708981977821_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFjIzmLc6vPYrR9LDLh8H1V4DB_B1ABZufgMH8HUAFm55ACFwof1SH0_6mQdiGPR8Ki1SXD24oZDNm70uN9SRdG&_nc_ohc=mwTVeGpGEJcQ7kNvwFzhpOQ&_nc_oc=AdnCAx9Jl-SoDZHLCX9aakOai1W_TJYsBk8iNcgX-cRLGd4Qh-oFArU82fFKlzccyKk&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=S8m5-MmGMkfNg2545iZdhw&oh=00_AfbygWXAKrYVSc9AjWxuJqpB_JH1FY2jBm2vdN7ahHbDqg&oe=68C9D521",
     ],
   },
   {
@@ -35,7 +48,7 @@ const fakeProducts = [
     price: 2200,
     stock: 5,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534962636_122106313358973943_3225486904480511132_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZYhKaR_fXH71-HrIqgaUmYna9WwVV461idr1bBVXjrdFMAoTANzvlKWEDkZEiXaYS7NrTQYcH-rI7JhHhtS7k&_nc_ohc=MubqEsbQ0AMQ7kNvwHo-tGV&_nc_oc=AdkMO7RnXv3j95qyo3x3dGG5QCkqna-PTQ_NMDf4xSGaJu-ggwldfU5Su4-cu66KiqQ&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=vXw2IQaizJiHds26h-h_xg&oh=00_AfaeAYziE4d2VG7tyco22X16Pr76DEk7VirXwt24Lvzf0w&oe=68C05897",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/533632473_122104364354973943_3025970382381255880_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFDZGaLcP05-kjbFphDTHe_JwKdzeBEdAMnAp3N4ER0A196D_Jaa1x6BQk4kBZyqTxv6vPvr7nwEZ9L_AtTW_WQ&_nc_ohc=DkYam1ddK9wQ7kNvwE8jWLe&_nc_oc=AdkW-PArtUwADeTsra0mwRCam0Q7qWI2NMr5pP4b3OqH7zKfdjpkfHWhg_hVih9gtUE&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=P1lUqsGPOGcJIL36zALcZw&oh=00_AfYlMAPhGVs9eqacQSSGA_xUDBhc1XYgnBQ1yqSzSep9gQ&oe=68CA01B1",
     ],
   },
   {
@@ -45,7 +58,7 @@ const fakeProducts = [
     price: 1800,
     stock: 12,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/536270090_122106312614973943_1005577160248086383_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE1CBoCPemxOTEsj9Do9YQw-cdhRlMt2EP5x2FGUy3YQ7Wg_jJktjIVYvOfLW4HPFYfdkbqvngYFQzB8pLxp_7J&_nc_ohc=dpjW6o9DOE0Q7kNvwH6npbs&_nc_oc=AdlmUBxyu8NhYjXQpVdDYJlQfJUPx6Tf6GgCX6Ywq7ygaFcsAtPR7YHaYk2UE6bf9VA&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=QUmyI0HHTrJgjYMdQMPWAw&oh=00_AfYSvMqfyyX96sJjoTnimtrycXCYo_EHYw5h2Bfru1_83w&oe=68C04668",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532569047_122104976060973943_7533162965895960141_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeG_TKgQ064USeV1p2_JunKoqhppwu_ws6mqGmnC7_CzqW5Ls6ZGQph9czx6Rg5x1gGsmgPc4WQAXUGn5GwwggrP&_nc_ohc=FunH8QnuW2cQ7kNvwEZ4QxI&_nc_oc=AdliXjJxTElczMVnfE_HETO-FHcgEefVyEgsoWXCA65OJN9xmIDLkGU-JF8EXbIciVg&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=JTGmlNciVcafiDeZK2_K4Q&oh=00_AfYiTo_Y2mYCRAxNSUmpBhOCPG2_SY_TFU8jsc6GWbpcXg&oe=68C9D7E1",
     ],
   },
   {
@@ -55,7 +68,7 @@ const fakeProducts = [
     price: 750,
     stock: 20,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532569047_122104976060973943_7533162965895960141_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeG_TKgQ064USeV1p2_JunKoqhppwu_ws6mqGmnC7_CzqW5Ls6ZGQph9czx6Rg5x1gGsmgPc4WQAXUGn5GwwggrP&_nc_ohc=3TenKVa3OvgQ7kNvwHba6Lz&_nc_oc=AdnuCRPUDW1Gcg5_9caqywPK0AKEJOCzj_JNOcpEsNC-VgkgPJeObFsNywd7CP_PSxg&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=LHTquBG8LCeqAdON0QgQJQ&oh=00_AfZkcvG9WMn3jTGCaVoS_bYGrsXOUoCTNZ9J3OpOLz6XzA&oe=68C06521",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532628420_122104440896973943_189849678533842657_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGXsRazuPjQXwpxDPu3C6Mgf6TaH3DN4QJ_pNofcM3hAkVr-IFnW7c0Y3XCIXAH4XiRlihwfSjfl8xXtoy6Qjaw&_nc_ohc=SiIFumusAlAQ7kNvwHr7OFj&_nc_oc=AdnkJsXPQDj6EREQIM4Z00O_3rILjd0q2C8GNcYzOaHTfwK1YsiUIbejUcGfPAIHjzo&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=_ZZ6DQO5Tt6KXHPUPFg7lA&oh=00_AfYNwUQDZ2VUJ-crUQBpW0diwexuFjUOgC0GTefloeVH3g&oe=68C9E93D",
     ],
   },
   {
@@ -65,82 +78,81 @@ const fakeProducts = [
     price: 600,
     stock: 30,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534194665_122104440758973943_6615517092214592842_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFCN7FhWJAGw40A3udUaIwGzoHRwuDiLS7OgdHC4OItLqj-QQ-PX-VPg7yaUq1Fe0NCpV6dqQ7vhuPzVPLhcuZT&_nc_ohc=JBjyRIVrBQsQ7kNvwFVCdhW&_nc_oc=Adkv6caz9kra-xHEUP9ZK8HHDbdEBP-x6UTT9aLwJi8vCkTepWjWDZnyuyJ3DXU5FOE&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=Z0WfV8pDRUtobiNGeZ0m6w&oh=00_AfZGPdh8WZhj7pVmpFvznVkWcMXBfLHpHjYJbG3s2UgMKQ&oe=68C0522F",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/540706896_122114085884973943_1992705282509866384_n.jpg?stp=dst-jpg_s600x600_tt6&_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeG2pDXMa979TXr1ysYCBXzZWYLPWGOnCmBZgs9YY6cKYMps3zwhQiDr2WxRg6qJdhm3Ag53Q4xWEym_XyD6RNnn&_nc_ohc=02PhkMA942EQ7kNvwGo7Lgp&_nc_oc=AdlWp6y3LKn2oQs_cFN04RXsrgu15wVFy6FJXopF7IiJUC2h96qwUqNK9TBbC16uyl4&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=Jb9dB-pmi6h1u8_oQzjz7w&oh=00_Afb6e2oaPZ8F5ab5043IBRAI3cI0iAczS4KcZImtiKA5ng&oe=68C9E67F",
     ],
   },
 ];
 
 // --- Product Card ---
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product }: ProductCardProps) => {
   const [hover, setHover] = useState(false);
 
   return (
     <div
-      className="h-[360px] mb-12 group relative overflow-hidden"
-      style={{ backgroundColor: "rgb(234 234 234)" }}
+      className="h-[360px] mb-12 group relative overflow-hidden bg-neutral-200"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
       {/* Product Image */}
       <div
+        className={`h-[90%] relative mx-auto duration-500 transform ${
+          hover ? "scale-105" : ""
+        }`}
         style={{
           backgroundImage: `url(${product.images[0]})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           width: "80%",
         }}
-        className={`h-[90%] relative mx-auto duration-[.4s] ${
-          hover ? "scale-105" : ""
-        }`}
-      ></div>
+      />
 
       {/* Product Name */}
-      <div className="h-[50px] bg-[rgb(234_234_234)] w-full font-medium py-2 text-center">
+      <div className="h-[50px] bg-neutral-200 w-full font-medium py-2 text-center">
         {product.name}
       </div>
 
-      {/* Hover Overlay - show product details on hover */}
+      {/* Hover Overlay */}
       <div
-        className={`absolute top-0 left-0 w-full h-full z-5 flex flex-col justify-center items-center gap-3 font-clashRegular ${
+        className={`absolute top-0 left-0 w-full h-full z-10 flex flex-col justify-center items-center gap-3 font-clashRegular ${
           hover ? "backdrop-blur-sm bg-black/20" : ""
         }`}
       >
-        {/* Product Information */}
+        {/* Product Info */}
         <div
-          className={`text-center text-white bg-black/60 px-4 py-2 ${
+          className={`text-center text-white bg-black/60 px-4 py-2 transition-opacity duration-300 ${
             hover ? "opacity-100" : "opacity-0"
-          } duration-300`}
+          }`}
         >
           <p className="text-sm font-semibold mb-1">{product.category}</p>
           <p className="text-lg font-bold mb-1">৳ {product.price}</p>
           <p className="text-sm">
             Stock: {product.stock}{" "}
-            {product.stock <= 5 ? "Stock shimito" : "Available"}
+            {product.stock <= 5 ? "Limited Stock" : "Available"}
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <button
-          className={`w-[80%] border border-white bg-transparent text-white cursor-pointer ${
+        {/* View Details */}
+        <Link
+          href={`/product/${product.id}`}
+          className={`w-[80%] border border-white text-white text-center transition-all duration-500 ${
             hover
               ? "h-[40px] text-base"
-              : "w-0 h-0 text-[0px] border-none duration-[.5s]"
-          } duration-[.5s] hover:bg-white hover:text-black`}
-          onClick={() => {
-            // Navigate to product details
-            window.location.href = `/product/${product.id}`;
-          }}
+              : "w-0 h-0 text-[0px] border-none overflow-hidden"
+          } hover:bg-white hover:text-black`}
         >
           View Details
-        </button>
+        </Link>
 
+        {/* Add to Cart */}
         <button
-          className={`w-[80%] border border-white bg-transparent text-white cursor-pointer flex items-center justify-center gap-2 ${
-            hover ? "h-[40px] text-base" : "w-0 h-0 text-[0px] border-none"
-          } duration-[.5s] hover:bg-white hover:text-black`}
+          className={`w-[80%] border border-white text-white cursor-pointer flex items-center justify-center gap-2 transition-all duration-500 ${
+            hover
+              ? "h-[40px] text-base"
+              : "w-0 h-0 text-[0px] border-none overflow-hidden"
+          } hover:bg-white hover:text-black`}
         >
           <ShoppingCart
-            className={`${hover ? "w-4 h-4" : "w-0 h-0"} duration-300`}
+            className={`${hover ? "w-4 h-4" : "w-0 h-0"} transition-all`}
           />
           Add To Cart
         </button>
@@ -163,20 +175,21 @@ export default function ProductSection() {
         ))}
       </div>
 
-      <div>
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-center"
+      {/* Bottom CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        viewport={{ once: true }}
+        className="text-center mt-10"
+      >
+        <Link
+          href="/collections"
+          className="bg-black text-white font-semibold px-10 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 inline-block"
         >
-          <button className="bg-black hover:from-blue-900  text-white font-semibold px-10 py-4  shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
-            Browse Your Collection
-          </button>
-        </motion.div>
-      </div>
+          Browse Your Collection
+        </Link>
+      </motion.div>
     </section>
   );
 }

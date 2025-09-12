@@ -4,6 +4,20 @@ import { useState } from "react";
 import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 
+type Product = {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  stock: number;
+  images: string[];
+};
+
+type ProductCardProps = {
+  product: Product;
+  index: number;
+};
+
 // --- New Arrivals Products ---
 const newArrivals = [
   {
@@ -13,7 +27,7 @@ const newArrivals = [
     price: 1200,
     stock: 8,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/533009442_122104364546973943_2904521196908557415_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeED2jotRDyOJbUUJw-uyqaYwI5CvYmbs0DAjkK9iZuzQKpubE6bJJa-beTi5-s1IzM7cWuuC-pMVXf8quTcsosZ&_nc_ohc=W2a04iegKFwQ7kNvwHS67FV&_nc_oc=Adlc8QnpMFZnPZFFCAwNM_Q09NvT0ftoRbomgk4X-II1bu3iVBY2Xy6ubSWbeWen8ik&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=7CrumKexDfBbi-8eu-Ty3g&oh=00_Afby540kUvvGg2SnhsfX6Btz1VvxJKu6kY1Gpjadavm4Zg&oe=68C03FB0",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532295847_122104976126973943_4310246959330191845_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGR8flFMI3sBibrfOun7yg4MoXD8KGrGkcyhcPwoasaRxB6uRZKDvE6dyWQJBT870vqvqxkFsfol_5inrEUVg3U&_nc_ohc=Hpy1Dyo2N4AQ7kNvwGo8kxi&_nc_oc=AdlFzMmwOw0Tt0uEcAB-TwLifvOc5df76p17yiWQ32vdx16ySRHHTVQMonKFsfGUCsA&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=y5kEqQ54BBjgu7W8wOMw_A&oh=00_Afbvn2BJALnwWZzREGiBdFVG-1WLsBhs-EsoMHzPg8ZK-g&oe=68C9FF19",
     ],
   },
   {
@@ -23,7 +37,7 @@ const newArrivals = [
     price: 950,
     stock: 15,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/542714379_122115311192973943_6893585986170167570_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGX3N_EdfWrtdlB34c-sS9kzAMPEuE7SI_MAw8S4TtIj9HKu5PH9NJkZbEFvhtieDGqy6NhrImgg8hAZiaC7OsQ&_nc_ohc=bWNOYQfIitIQ7kNvwGbs0vh&_nc_oc=AdmvMP0iB0-q54c-ABuUNggl3v240OxpoKXQjSjUJmDfl9-dKm2uKESZDXlVKwpp7Dw&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=YrDUSIVK2MsZYrex8I-W7g&oh=00_Afa1cejoMcV_YkOQfvXNvj8ufR_EpCQVAkYRmLsNq6vuOQ&oe=68C051B2",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/520416636_122104976798973943_752362423245426600_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHLaCM-6F-1ahMMMC7OXbV-GWwZUHg46Y4ZbBlQeDjpjlXhJmwzTrPuPv9Dax1h3uev14kuCh5_uhznagwehuaC&_nc_ohc=HYtZ6yiw5Z8Q7kNvwFT6stl&_nc_oc=AdlRFY2ZIk4-LxkIOuRqqtfjuzqnIfQwYpFD-vA5FgkMbzv5IrG_TNCR9oNXDwwomzE&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=WKVqNU9NlrWCq7Yq5P-U0Q&oh=00_AfYEk5BtR29G0Nw6ZF7KkiVZV9pXffbzvWqoN2cLkoNWmQ&oe=68C9FAF4",
     ],
   },
   {
@@ -33,7 +47,7 @@ const newArrivals = [
     price: 2200,
     stock: 5,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534962636_122106313358973943_3225486904480511132_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZYhKaR_fXH71-HrIqgaUmYna9WwVV461idr1bBVXjrdFMAoTANzvlKWEDkZEiXaYS7NrTQYcH-rI7JhHhtS7k&_nc_ohc=MubqEsbQ0AMQ7kNvwHo-tGV&_nc_oc=AdkMO7RnXv3j95qyo3x3dGG5QCkqna-PTQ_NMDf4xSGaJu-ggwldfU5Su4-cu66KiqQ&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=vXw2IQaizJiHds26h-h_xg&oh=00_AfaeAYziE4d2VG7tyco22X16Pr76DEk7VirXwt24Lvzf0w&oe=68C05897",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534919662_122104439972973943_2819935696708950046_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGzZ_hnwjiJkNZ6wltcA80cpkZ19yjpZ-imRnX3KOln6LSoiBLtRiRfJmmby4WDFiFLC0IMx3pX-U_fLK5q30ln&_nc_ohc=O8XMUQMyMRoQ7kNvwHar5jn&_nc_oc=Adk6mo27k-vEWs86uPbyR5ZSV_aXR-zLqFIQM5Yn30Kzy7Z9s05Bx69UqGew60v06OA&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=BY7tTlyDGhxlKx4Edsgk_w&oh=00_AfbZNGgM-YlWOxdNxm4I1L3r_yFePeC0aCL6OAVatYt0uw&oe=68C9E0D8",
     ],
   },
   {
@@ -43,7 +57,7 @@ const newArrivals = [
     price: 1800,
     stock: 12,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/536270090_122106312614973943_1005577160248086383_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE1CBoCPemxOTEsj9Do9YQw-cdhRlMt2EP5x2FGUy3YQ7Wg_jJktjIVYvOfLW4HPFYfdkbqvngYFQzB8pLxp_7J&_nc_ohc=dpjW6o9DOE0Q7kNvwH6npbs&_nc_oc=AdlmUBxyu8NhYjXQpVdDYJlQfJUPx6Tf6GgCX6Ywq7ygaFcsAtPR7YHaYk2UE6bf9VA&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=QUmyI0HHTrJgjYMdQMPWAw&oh=00_AfYSvMqfyyX96sJjoTnimtrycXCYo_EHYw5h2Bfru1_83w&oe=68C04668",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532836508_122104439864973943_8243994768622642815_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE3oM5DT0WCRuIBsMK-Cv9UVpAihc6V6kNWkCKFzpXqQymQo3SdGWLfxTP2nTL0nAck9EB_gwfFV3cliTswVOjH&_nc_ohc=K01wbxSAYWkQ7kNvwHO6mzS&_nc_oc=AdlqLHVBB-gXbdWV-rwzeCbJuxRiNJ5O67o0MOHvlaVjG1r37rBmu09v5KizB7zsJm0&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=TpkjdimHKOaYlYhFfhZMkw&oh=00_AfYCIBvBEo2zdpCdrTcj0qYnoZJMgcFb4GN-arJ3BIoSXA&oe=68C9DF16",
     ],
   },
   {
@@ -53,7 +67,7 @@ const newArrivals = [
     price: 750,
     stock: 20,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532569047_122104976060973943_7533162965895960141_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeG_TKgQ064USeV1p2_JunKoqhppwu_ws6mqGmnC7_CzqW5Ls6ZGQph9czx6Rg5x1gGsmgPc4WQAXUGn5GwwggrP&_nc_ohc=3TenKVa3OvgQ7kNvwHba6Lz&_nc_oc=AdnuCRPUDW1Gcg5_9caqywPK0AKEJOCzj_JNOcpEsNC-VgkgPJeObFsNywd7CP_PSxg&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=LHTquBG8LCeqAdON0QgQJQ&oh=00_AfZkcvG9WMn3jTGCaVoS_bYGrsXOUoCTNZ9J3OpOLz6XzA&oe=68C06521",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/533104712_122104440632973943_2490122050539472476_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHMdTNWzwdnoK1A7Dl9dZanCkXs0h6IlvEKRezSHoiW8d373H0LZBPBK369zWK3zGrdC3u4WxvcpN5VFfGwl-i4&_nc_ohc=RZ2ojmIX-0cQ7kNvwEuYG2e&_nc_oc=AdmL6Pe1CSJOw1hOTGRk4N4NpJf304BfDZ09CZLGawzsTG-hlmcpfWgqg1Z4ArFaxLM&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=XkdLueLXuLYbrRJ-DK1BsA&oh=00_AfbP3XCOelFcXkysQu6plRuPLokxSlVmph63DJHsi0KS3A&oe=68CA03C2",
     ],
   },
   {
@@ -63,13 +77,13 @@ const newArrivals = [
     price: 600,
     stock: 30,
     images: [
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534194665_122104440758973943_6615517092214592842_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFCN7FhWJAGw40A3udUaIwGzoHRwuDiLS7OgdHC4OItLqj-QQ-PX-VPg7yaUq1Fe0NCpV6dqQ7vhuPzVPLhcuZT&_nc_ohc=JBjyRIVrBQsQ7kNvwFVCdhW&_nc_oc=Adkv6caz9kra-xHEUP9ZK8HHDbdEBP-x6UTT9aLwJi8vCkTepWjWDZnyuyJ3DXU5FOE&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=Z0WfV8pDRUtobiNGeZ0m6w&oh=00_AfZGPdh8WZhj7pVmpFvznVkWcMXBfLHpHjYJbG3s2UgMKQ&oe=68C0522F",
+      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534696453_122104976222973943_4127404409419455615_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGl0ZaT3C8GW7oEMlGy8cr0HRu9rLeZnBQdG72st5mcFH-y5N4l5IRaM0cwMLLN9PiInaCSONIg-3fAtlrvVsem&_nc_ohc=hTgp4Wl8pv0Q7kNvwHL4HKv&_nc_oc=AdlowCqpIvZV4gIcg0t94XjvCO5eh7eIa-hbYxjuVqTnSdplKw5JaPIb98LDn3QR6Gk&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=09xFlLQdspMaZaRf__NIYQ&oh=00_AfbhXd11Z5C98UU5IqOumNegps-6vNoR3D0Z3HNi7oJXOw&oe=68C9FC1F",
     ],
   },
 ];
 
 // --- Product Card Component ---
-const ProductCard = ({ product, index }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
   const [hover, setHover] = useState(false);
 
   return (

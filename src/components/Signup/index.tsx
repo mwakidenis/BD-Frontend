@@ -69,12 +69,12 @@ const Signup = () => {
 
         <div className="mt-4 divider">or</div>
 
-        <p className="text-[12px] md:text-sm mb-8">
+        <Link href={"/login"} className="text-[12px] md:text-sm mb-8">
           Already have an account?{" "}
           <span className="font-bold underline duration-300 cursor-pointer active:scale-90">
             Login
           </span>
-        </p>
+        </Link>
       </div>
     </div>
   );

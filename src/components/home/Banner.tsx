@@ -60,7 +60,7 @@ const Banner = () => {
         >
           {/* Next.js Optimized Image */}
           <Image
-            src="https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532314375_122104439918973943_741066774039141628_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFBGroF815j32TyKVklvjW6VJJZ9Cw4PlNUkln0LDg-UxfIVDI9iwO_z-s4yf3neWrf5419tq5hAjhDSo79oVoL&_nc_ohc=kos53XVhLhgQ7kNvwHNnS1B&_nc_oc=AdkeZxa_Wc9id4w_TZFFM2Dsk5FzziRyAxWieiiIF58F38j3AfM7l38WmyCOmpb4WVw&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=rJWccE68Pp4IDySaLR4KRA&oh=00_AfbjAAW3lhlSR0dXvJzDuncFRVsDjbEytOeToNxWvHybwQ&oe=68BF0224"
+            src="https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534962636_122106313358973943_3225486904480511132_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGZYhKaR_fXH71-HrIqgaUmYna9WwVV461idr1bBVXjrdFMAoTANzvlKWEDkZEiXaYS7NrTQYcH-rI7JhHhtS7k&_nc_ohc=q7a4ODM-0gYQ7kNvwFD4LrT&_nc_oc=AdnS6N1KfTMX2rQbW-Jmab7gXrNXrIIw28xq4-aa-S6897LLAymzWK2hXl3iI1J4m_s&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=WTco_2eASAy6C10dTF64oQ&oh=00_AfZzLcX1UCey7bHcAk5YrdWIKGr0ZBtU-fk6mrzDjaeJRw&oe=68CA0397"
             alt="Premium quality mats and rugs collection"
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -92,7 +92,7 @@ const Banner = () => {
             className="relative overflow-hidden  group cursor-pointer"
           >
             <Image
-              src="https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534567920_122106312458973943_8239955401131150047_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFj8YafKT4L0FEItO11xQHGjV1Xt06w1zWNXVe3TrDXNSMUoP4YdgC182KghNE5VkIAtN9i44IBUyHa406trtYg&_nc_ohc=YKlSRqwaukEQ7kNvwG6mdXJ&_nc_oc=AdlTXjc70EQ3LlvNCs4CXXWk-kGdhtO6fzFkULtNrcwf6_6bWBc2DcSjzlIa4SKG52g&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=gR4v4VdW7dZC8PG1chgp4w&oh=00_AfbUeucHYkWy5z3F_bp7RsB_84Nswseaaqfarq0xwQDNYg&oe=68BF07CC"
+              src="https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/536142904_122106313430973943_6471720637710960023_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeE750xtUDjOIG4P9YpQejv92VCeWW9L3_zZUJ5Zb0vf_B6JgknBsDqyJMYGRZJHir5lvJObY3TlwKb5OVR9Fm3l&_nc_ohc=N1XS2J0h2zIQ7kNvwEIvlkr&_nc_oc=AdkrNOCftcDo6BH1KGlhMYqSR4UvohDa9ucoHxONYvVcv8LMUOxeU9Cx11TTy-7HYqI&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=bX_OObEaOfO3xDmMwVCSTw&oh=00_AfY02ERrJc-ir2ThLoYzlieLQwdoiiHKBQHSDyLier3Oug&oe=68C9DBC7"
               alt="Colorful decorative mats for home"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -121,7 +121,7 @@ const Banner = () => {
             className="relative overflow-hidden  group cursor-pointer"
           >
             <Image
-              src="https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/533632473_122104364354973943_3025970382381255880_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFDZGaLcP05-kjbFphDTHe_JwKdzeBEdAMnAp3N4ER0A196D_Jaa1x6BQk4kBZyqTxv6vPvr7nwEZ9L_AtTW_WQ&_nc_ohc=qatNwXZJhloQ7kNvwG11gzX&_nc_oc=AdlDtMfS-pYf13viFgZZbtn3a5EUm68A1v1P0uAlQGznod1Uhum88y5KK57HlBKZIPY&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=MqeFtVcQa1TaQLMg8xPiKA&oh=00_Afbgxq8Tpns-ekJN_oAm2zVKu3juTux4ap6G3YjBNr8wRQ&oe=68BF0531"
+              src="https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/534340482_122106313046973943_6905950517460037426_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHG-Prl1X3iB4-kGz4BQhlSofSZR-QnDj2h9JlH5CcOPW52vTpUCKxChe4nyBqPxxfpgmFBOfQXGoSSxSznbRuW&_nc_ohc=FufIFXD5PLMQ7kNvwHXvR6b&_nc_oc=AdlBUjOgz-SFNALpPpwS_hQyDrMglg-MZ68U3hjWNlna0bSrt7PkocPDD4OH_Inqgwk&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=4WY_9yJvzBiHFcFFFY3KRg&oh=00_AfbHhN5bYM0QQvIZYcszNPvaQl0P3zUMxTH41DpBR2QH-g&oe=68C9DC0D"
               alt="Elegant room mats and rugs"
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-110"
