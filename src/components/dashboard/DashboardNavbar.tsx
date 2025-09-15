@@ -53,7 +53,7 @@ export function DashboardNavbar() {
     }
   };
   return (
-    <header className="w-full border-b bg-white dark:bg-zinc-900 dark:border-zinc-700 px-4 py-3 flex items-center justify-start space-x-8 sm:space-x-14">
+    <header className="w-full border-b bg-white dark:bg-zinc-900 dark:border-zinc-700 px-4 py-3 flex items-center justify-between space-x-8 sm:space-x-14">
       {/* Logo */}
 
       <p className="flex justify-items-start items-center gap-4  text-md font-semibold">

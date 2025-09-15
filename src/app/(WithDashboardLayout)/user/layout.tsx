@@ -2,7 +2,16 @@
 import { DashboardNavbar } from "@/components/dashboard/DashboardNavbar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { Home, ContactRound, ShoppingBag, Book } from "lucide-react";
+import {
+  Home,
+  ContactRound,
+  ShoppingBag,
+  Book,
+  User2,
+  ShoppingCart,
+  Pen,
+  Shield,
+} from "lucide-react";
 const items = [
   {
     title: "Home",
@@ -10,9 +19,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "Profile",
+    title: "User Profile",
     url: "/user/profile",
-    icon: ContactRound,
+    icon: User2,
   },
   {
     title: "Orders",
@@ -22,17 +31,17 @@ const items = [
   {
     title: "Checkout",
     url: "/user/checkout",
-    icon: ShoppingBag,
+    icon: ShoppingCart,
   },
   {
     title: "Update Profile",
     url: "/user/update-profile",
-    icon: ShoppingBag,
+    icon: Pen,
   },
   {
     title: "Change Passoword",
     url: "/user/change-password",
-    icon: ShoppingBag,
+    icon: Shield,
   },
 ];
 

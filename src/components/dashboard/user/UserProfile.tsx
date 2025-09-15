@@ -68,17 +68,17 @@ const UserProfile = ({
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="relative flex justify-between items-center w-full rounded-2xl bg-gradient-to-r from-blue-400 to-purple-400 shadow-lg p-4 sm:p-6">
+      <div className="relative flex justify-between items-center w-full bg-gradient-to-r from-teal-500 to-blue-500 shadow-lg p-4 sm:p-6 my-5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <Avatar className="w-20 h-20 sm:w-24 sm:h-24 border-4 border-white shadow-md">
-            <AvatarImage src="https://github.com/shadcn.png" alt={user.name} />
+            <AvatarImage alt={user.name} />
             <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-white">
               {user.name}
             </h1>
-            <p className="text-sm text-blue-100">{user.role}</p>
+            <p className="text-sm text-white">{user.role}</p>
           </div>
         </div>
         <div>
@@ -91,50 +91,6 @@ const UserProfile = ({
       {/* Main Layout Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Left Panel */}
-        <div className="space-y-6 lg:col-span-2">
-          <Card className="p-3">
-            <CardHeader>
-              <CardTitle className="text-base font-semibold">
-                Profile Info
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <InfoItem
-                icon={<BadgeCheck size={18} />}
-                label="Role"
-                value={user.role}
-              />
-              <InfoItem
-                icon={<Mail size={14} />}
-                label="Email"
-                value={user.email}
-              />
-              <InfoItem
-                icon={<MapPin size={18} />}
-                label="Last Logged In"
-                value={lastLogin ? format(lastLogin, "PPPpp") : "Unknown"}
-              />
-            </CardContent>
-          </Card>
-
-          <Card className="p-3">
-            <CardHeader>
-              <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <MapPin size={18} /> Delivery Address
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-md dark:text-muted-foreground">
-                {lastOrder?.shippingInfo?.shippingAddress || "Not Available"}
-              </p>
-              <p className="text-md dark:text-muted-foreground">
-                {lastOrder?.shippingInfo?.shippingCity || ""}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Right Panel */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="p-3">
             <CardHeader>
@@ -168,12 +124,55 @@ const UserProfile = ({
               )}
             </CardContent>
           </Card>
+          <Card className="p-3">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <MapPin size={18} /> Delivery Address
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-md dark:text-muted-foreground">
+                {lastOrder?.shippingInfo?.shippingAddress || "Not Available"}
+              </p>
+              <p className="text-md dark:text-muted-foreground">
+                {lastOrder?.shippingInfo?.shippingCity || ""}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Panel */}
+        <div className="space-y-6 lg:col-span-2">
+          <Card className="p-3">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold">
+                Profile Info
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <InfoItem
+                icon={<BadgeCheck size={18} />}
+                label="Role"
+                value={user.role}
+              />
+              <InfoItem
+                icon={<Mail size={14} />}
+                label="Email"
+                value={user.email}
+              />
+              <InfoItem
+                icon={<MapPin size={18} />}
+                label="Last Logged In"
+                value={lastLogin ? format(lastLogin, "PPPpp") : "Unknown"}
+              />
+            </CardContent>
+          </Card>
         </div>
       </div>
 
       {/* Reviews Section - Full Width */}
       <div className="col-span-full">
-        <Card className="p-4 shadow-md rounded-2xl border dark:border-gray-700">
+        <Card className="p-4 shadow-md border dark:border-gray-700">
           <CardHeader>
             <CardTitle className="text-lg font-bold flex items-center gap-2">
               Reviews ({reviews?.length ?? 0})

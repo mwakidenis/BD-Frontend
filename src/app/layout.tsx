@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { Poppins } from "next/font/google";
 import Providers from "@/providers/Providers";
+import { Suspense } from "react";
 // import Providers from "../providers/Providers";
 
 const poppins = Poppins({
@@ -35,11 +36,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppinsClassName}`}>
-        <Providers>
-          {children}
-          <Toaster position="top-center" />
-        </Providers>
+      <body className={`${poppinsClassName}  antialiased`}>
+        <Suspense>
+          <Providers>{children}</Providers>
+        </Suspense>
       </body>
     </html>
   );

@@ -1,9 +1,6 @@
 export const dynamic = "force-dynamic";
 
 import UserProfile from "@/components/dashboard/user/UserProfile";
-import { useUser } from "@/context/UserContext";
-import { cartSelector } from "@/redux/features/cartSlice";
-import { useAppSelector } from "@/redux/hooks";
 import { getCurrentUser } from "@/services/auth";
 import { getUserOrders } from "@/services/order";
 import { getSpecificUserProductReview } from "@/services/review";
@@ -18,11 +15,8 @@ const UserProfilePage = async () => {
   }
 
   const { data: userInfo } = await getSingleUser(user.id);
-
   const { data: userOrders } = await getUserOrders(user.id);
-
   const sanitizedOrders = Array.isArray(userOrders) ? userOrders : [];
-
   const { data: userReviews } = await getSpecificUserProductReview(user.id);
 
   return (

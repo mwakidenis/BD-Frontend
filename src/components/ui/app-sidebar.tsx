@@ -26,11 +26,8 @@ export function AppSidebar({ items }: { items: TItem[] }) {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <Link href="/">
-            <h1>SoptokBD</h1>
-          </Link>
           <SidebarGroupLabel className="text-lg font-semibold py-6">
-            <Link href="/">MediCommerce</Link>
+            <Link href="/">SoptokBD</Link>
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="gap-4">
