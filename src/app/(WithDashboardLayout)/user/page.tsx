@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import UserProfile from "@/components/dashboard/user/UserProfile";
+import UserProfile from "@/components/dashboard/user/UserProfile/UserProfile";
 import { getCurrentUser } from "@/services/auth";
 import { getUserOrders } from "@/services/order";
 import { getSpecificUserProductReview } from "@/services/review";
