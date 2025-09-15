@@ -1,6 +1,6 @@
+import { ICartItem, ICartState } from "@/types/cart";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { ICartItem, ICartState } from "@/types";
 
 const initialState: ICartState = {
   items: [],
