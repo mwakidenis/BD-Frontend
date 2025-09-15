@@ -69,10 +69,12 @@ const UserProfile = ({
     <div className="space-y-8">
       {/* Header */}
       <div className="relative flex justify-between items-center w-full bg-gradient-to-r from-teal-500 to-blue-500 shadow-lg p-4 sm:p-6 my-5">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          <Avatar className="w-20 h-20 sm:w-24 sm:h-24 border-4 border-white shadow-md">
-            <AvatarImage alt={user.name} />
-            <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 ">
+          <Avatar className="w-20 h-20 border-2 border-white shadow-sm">
+            <AvatarImage alt={user?.name || "User"} />
+            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/40 text-primary font-semibold">
+              {user?.name?.charAt(0)?.toUpperCase() || "U"}
+            </AvatarFallback>
           </Avatar>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-white">

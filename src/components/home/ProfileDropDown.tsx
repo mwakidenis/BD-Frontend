@@ -32,18 +32,14 @@ export function ProfileDropDown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="border-[1px] bg-background border-white cursor-pointer w-9 h-9">
-          <AvatarImage src="https://github.com/shadcn.png" alt={user.name} />
-          <AvatarFallback>
-            {user.name && (
-              <div className="hidden md:flex items-center">
-                <Badge>{user.name.toUpperCase()}</Badge>
-              </div>
-            )}
+        <Avatar className="w-10 h-10 border-2 border-white shadow-sm cursor-pointer">
+          <AvatarImage alt={user?.name || "User"} />
+          <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/40 text-primary font-semibold">
+            {user?.name?.charAt(0)?.toUpperCase() || "U"}
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-44 mr-10">
         <DropdownMenuLabel>
           <p className="text-center group flex">{user.name.toUpperCase()}</p>
         </DropdownMenuLabel>
