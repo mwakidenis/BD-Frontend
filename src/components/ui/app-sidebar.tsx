@@ -59,7 +59,7 @@ export function AppSidebar({ items }: { items: TItem[] }) {
   };
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-semibold py-6">
