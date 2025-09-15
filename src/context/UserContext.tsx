@@ -1,7 +1,7 @@
 "use client";
 
 import { getCurrentUser } from "@/services/auth";
-import { IUser } from "@/types";
+import { IUser } from "@/types/user";
 import {
   createContext,
   Dispatch,
