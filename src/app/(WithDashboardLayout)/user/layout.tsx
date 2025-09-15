@@ -1,4 +1,6 @@
 "use client";
+import { DashboardNavbar } from "@/components/dashboard/DashboardNavbar";
+import { AppSidebar } from "@/components/ui/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Home, ContactRound, ShoppingBag, Book } from "lucide-react";
 const items = [
