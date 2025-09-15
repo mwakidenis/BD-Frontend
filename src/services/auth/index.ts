@@ -15,15 +15,12 @@ export const registerUser = async (userData: FieldValues) => {
       },
       body: JSON.stringify(userData),
     });
-
     const result = await res.json();
 
     if (result.success) {
       (await cookies()).set("accessToken", result.data.accessToken);
-
       (await cookies()).set("refreshToken", result.data.refreshToken);
     }
-
     return result;
   } catch (error: any) {
     throw Error(error);
@@ -40,15 +37,11 @@ export const loginUser = async (userData: FieldValues) => {
       },
       body: JSON.stringify(userData),
     });
-
     const result = await res.json();
-
     if (result.success) {
       (await cookies()).set("accessToken", result.data.accessToken);
-
       (await cookies()).set("refreshToken", result.data.refreshToken);
     }
-
     return result;
   } catch (error: any) {
     return Error(error);
