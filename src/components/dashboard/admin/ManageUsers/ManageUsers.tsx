@@ -16,7 +16,6 @@ const ManageUser = ({ data }: { data: IUserResponse[] }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleDelete = (user: IUserResponse) => {
     setSelectedId(user._id);
@@ -43,15 +42,15 @@ const ManageUser = ({ data }: { data: IUserResponse[] }) => {
   const columns: ColumnDef<IUserResponse>[] = [
     {
       accessorKey: "name",
-      header: "Name",
+      header: "User Name",
     },
     {
       accessorKey: "email",
-      header: "Email",
+      header: "User Email",
     },
     {
       accessorKey: "role",
-      header: "Role",
+      header: "User Role",
       cell: ({ row }) => {
         const role = row.original.role;
         const baseStyle =
@@ -97,8 +96,10 @@ const ManageUser = ({ data }: { data: IUserResponse[] }) => {
   ];
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">Manage Users</h2>
+    <div className="p-5">
+      <h2 className="text-2xl font-semibold mb-4 text-center my-5">
+        Manage all soptokBD Users
+      </h2>
       <MMTable data={data} columns={columns} />
       <DeleteConfirmationModal
         name={selectedItem}

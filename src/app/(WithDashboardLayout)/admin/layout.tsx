@@ -47,11 +47,6 @@ const items = [
     url: "/admin/users",
     icon: Users,
   },
-  {
-    title: "Prescriptions Review",
-    url: "/admin/prescription-review",
-    icon: Book,
-  },
 ];
 
 export default function AdminDashboardLayout({
