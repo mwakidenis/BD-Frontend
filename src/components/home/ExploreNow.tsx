@@ -26,7 +26,7 @@ const ExploreNow = () => {
             SoptokBD. Inspire others and connect with a community that values
             creativity and tradition.
           </p>
-          <Link href="/">
+          <Link href="/signup">
             <button className="hover:cursor-pointer px-6 py-2 font-medium transition-all duration-300 hover:bg-gray-400 bg-white text-black shadow-md">
               Register now
             </button>

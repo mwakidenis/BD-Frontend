@@ -32,7 +32,7 @@ const ShopNow = () => {
                 transition={{ duration: 0.8, delay: 0.3 }}
                 viewport={{ once: true }}
               >
-                <Link href={"/loing"}>
+                <Link href={"/login"}>
                   <button className="bg-black hover:from-blue-900  text-white font-semibold px-10 py-4  shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 cursor-pointer">
                     Login
                   </button>
