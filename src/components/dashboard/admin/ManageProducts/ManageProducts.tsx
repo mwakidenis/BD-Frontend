@@ -13,8 +13,8 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import ProductSearchbar from "../../DashboardComponent/ProductSearchbar/ProductSearchbar";
 import TablePagination from "../../DashboardComponent/TablePagination/TablePagination";
-import { MMTable } from "@/components/ui/SoptokBDTable";
-import DeleteConfirmationModal from "@/components/ui/SoptokBDModal";
+import { MMTable } from "@/components/dashboard/DashboardComponent/SoptokBdTable/SoptokBDTable";
+import DeleteConfirmationModal from "@/components/dashboard/DashboardComponent/SoptokBdModal/SoptokBDModal";
 
 const ManageProduct = ({
   data,

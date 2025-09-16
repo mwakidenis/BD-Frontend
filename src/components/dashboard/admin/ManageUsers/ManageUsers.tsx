@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import DeleteConfirmationModal from "@/components/ui/SoptokBDModal";
-import { MMTable } from "@/components/ui/SoptokBDTable";
+import DeleteConfirmationModal from "@/components/dashboard/DashboardComponent/SoptokBdModal/SoptokBDModal";
+import { MMTable } from "@/components/dashboard/DashboardComponent/SoptokBdTable/SoptokBDTable";
 import { deleteSingleUser } from "@/services/user";
 import { IUserResponse } from "@/types/user";
 import { ColumnDef } from "@tanstack/react-table";

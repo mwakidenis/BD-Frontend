@@ -3,23 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { SidebarTrigger } from "../ui/sidebar";
 import { logout } from "@/services/auth";
 import { clearCart } from "@/redux/features/cartSlice";
 import { useDispatch } from "react-redux";
 import { protectedRoutes } from "@/constants";
 import { useUser } from "@/context/UserContext";
-import { ProfileDropDown } from "../home/ProfileDropDown";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ProfileDropDown } from "@/components/home/ProfileDropDown";
 
 const navItems = [
   { name: "Home", href: "/dashboard" },
