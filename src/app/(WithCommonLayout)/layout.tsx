@@ -10,7 +10,6 @@ const CommonLayout = ({ children }: { children: React.ReactNode }) => {
       <div>
         <Navbar />
       </div>
-
       <div className=" relative">{children}</div>
       <div>
         <Footer />

@@ -144,15 +144,15 @@ export default function Navbar() {
                 whileTap={{ scale: 0.95 }}
               >
                 <Link href={user?.role === "admin" ? "/admin" : "/user"}>
-                  <div
-                    className={`px-6 py-2 rounded-md transition-colors ${
+                  <Button
+                    className={`px-6 py-2 transition-colors ${
                       pathname === (user?.role === "admin" ? "/admin" : "/user")
                         ? "bg-primary text-white"
                         : "bg-black hover:bg-teal-950 text-white"
                     }`}
                   >
                     Dashboard
-                  </div>
+                  </Button>
                 </Link>
               </motion.div>
             )}

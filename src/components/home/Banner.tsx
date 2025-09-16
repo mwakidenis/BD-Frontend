@@ -2,6 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 const Banner = () => {
   return (
@@ -36,16 +37,18 @@ const Banner = () => {
             Quality mats and rugs designed to blend beauty with long-lasting
             comfort.
           </motion.p>
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-3 transition-all duration-300 shadow-lg hover:shadow-xl"
-          >
-            Redefine Your Space
-          </motion.button>
+          <Link href="/products">
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gray-900 hover:bg-gray-800 text-white font-medium px-8 py-3 transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer"
+            >
+              Redefine Your Space
+            </motion.button>
+          </Link>
         </div>
       </motion.div>
 
