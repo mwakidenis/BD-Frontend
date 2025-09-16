@@ -16,7 +16,7 @@ import TablePagination from "../../DashboardComponent/TablePagination/TablePagin
 import { MMTable } from "@/components/ui/SoptokBDTable";
 import DeleteConfirmationModal from "@/components/ui/SoptokBDModal";
 
-const ManageMedicine = ({
+const ManageProduct = ({
   data,
   meta,
 }: {
@@ -55,7 +55,7 @@ const ManageMedicine = ({
   };
 
   const handleUpdate = (id: string) => {
-    router.push(`/admin/medicines/update-medicine/${id}`);
+    router.push(`/admin/products/update-product/${id}`);
   };
 
   const handleSort = (column: string) => {
@@ -216,4 +216,4 @@ const ManageMedicine = ({
   );
 };
 
-export default ManageMedicine;
+export default ManageProduct;

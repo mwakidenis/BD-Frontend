@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 
-import ManageMedicine from "@/components/dashboard/admin/ManageProducts/ManageProducts";
+import ManageProduct from "@/components/dashboard/admin/ManageProducts/ManageProducts";
 import { getAllMedicine } from "@/services/product";
 import React from "react";
 
@@ -18,7 +18,7 @@ const MedicinesPage = async ({
 
   return (
     <div className=" w-full">
-      <ManageMedicine data={medicines} meta={meta} />
+      <ManageProduct data={medicines} meta={meta} />
     </div>
   );
 };
