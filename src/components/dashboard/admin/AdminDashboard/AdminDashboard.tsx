@@ -15,6 +15,7 @@ import {
 import { IOrderResponse } from "@/types/order";
 import { IUser } from "@/types/user";
 import { TMedicineResponse } from "@/types/product";
+import { OrderStatusBar } from "../OrderStatusBar/OrderStatusBar";
 
 const AdminDashboard = ({
   orders,
@@ -223,17 +224,14 @@ const AdminDashboard = ({
       </div>
 
       {/* Charts & Tables */}
+
+      <div className="py-10">
+        <OrderStatusBar orderStatusData={orderStatusData} />
+      </div>
+
       {/* <div className="py-10">
-      <OrderStatusBar orderStatusData={orderStatusData} />
-    </div>
-  
-    <div className="py-10">
-      <ProductsCategoriesChart products={products} />
-    </div>
-  
-    <div className="py-10">
       <DashboardProductsTable products={products} />
-    </div> */}
+    </div>  */}
     </div>
   );
 };
