@@ -27,7 +27,7 @@ const items = [
   },
   {
     title: "All Products",
-    url: "/admin/medicines",
+    url: "/admin/products",
     icon: ShoppingBasket,
   },
 

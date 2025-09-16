@@ -46,7 +46,7 @@ const ImageUploader = ({
       />
       <label
         htmlFor="image-upload"
-        className="w-full h-36 md:size-36 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md cursor-pointer text-center text-sm text-gray-500 hover:bg-gray-50 transition"
+        className="w-full h-36 md:size-36 flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer text-center text-sm text-gray-500 hover:bg-gray-50 transition"
       >
         {label}
       </label>

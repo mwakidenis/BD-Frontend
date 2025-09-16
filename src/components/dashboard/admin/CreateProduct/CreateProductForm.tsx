@@ -104,7 +104,7 @@ const CreateMedicineForm = () => {
 
         if (res.success) {
           toast.success(res?.message, { duration: 1400 });
-          router.push("/admin/medicines");
+          router.push("/admin/products");
         } else {
           toast.error(res?.message, { duration: 1400 });
         }
@@ -117,7 +117,7 @@ const CreateMedicineForm = () => {
   };
 
   return (
-    <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 my-5">
+    <div className="border-[1px] border-gray-300 flex-grow max-w-5xl p-5 my-5">
       <div className="flex justify-center items-center space-x-4 mb-5">
         <div>
           <h1 className="text-xl font-semibold">Create Product</h1>
@@ -131,7 +131,7 @@ const CreateMedicineForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem className="mb-3">
-                  <FormLabel>Medicine Name</FormLabel>
+                  <FormLabel>Product Name</FormLabel>
                   <FormControl>
                     <Input type="text" {...field} value={field.value || ""} />
                   </FormControl>
@@ -145,7 +145,7 @@ const CreateMedicineForm = () => {
               name="price"
               render={({ field }) => (
                 <FormItem className="mb-3">
-                  <FormLabel>Price</FormLabel>
+                  <FormLabel>Product Price</FormLabel>
                   <FormControl>
                     <Input
                       type="number"
@@ -247,14 +247,14 @@ const CreateMedicineForm = () => {
               name="type"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type</FormLabel>
+                  <FormLabel>Product Category</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select Medicine Type" />
+                        <SelectValue placeholder="Select Product Type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -334,10 +334,10 @@ const CreateMedicineForm = () => {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Medicine Description</FormLabel>
+                    <FormLabel>Product Description</FormLabel>
                     <FormControl>
                       <textarea
-                        className="h-36 border-[1px] p-2 rounded-md"
+                        className="h-36 border-[1px] p-2 resize-none"
                         {...field}
                         value={field.value || ""}
                       />
@@ -375,9 +375,11 @@ const CreateMedicineForm = () => {
             />
           </div>
 
-          <Button type="submit" className="mt-5 w-full">
-            {isSubmitting ? "Creating...." : "Create"}
-          </Button>
+          <div className="flex justify-center">
+            <Button type="submit" className="mt-5 w-1/2 ">
+              {isSubmitting ? "Creating...." : "Create"}
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
