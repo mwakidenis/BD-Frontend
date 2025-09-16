@@ -38,11 +38,10 @@ const ProductSearchbar = () => {
 
   return (
     <div className="space-y-1 mb-6">
-      <Label htmlFor="search">Search (Name, Description)</Label>
       <div className="flex items-center gap-2">
         <Input
           id="search"
-          placeholder="Search..."
+          placeholder="Search (Name, Description)"
           value={searchTerm}
           onChange={handleSearchChange}
         />
