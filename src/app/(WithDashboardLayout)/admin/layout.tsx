@@ -33,7 +33,7 @@ const items = [
 
   {
     title: "Create Product",
-    url: "/admin/create-medicine",
+    url: "/admin/create-product",
     icon: Pen,
   },
 
