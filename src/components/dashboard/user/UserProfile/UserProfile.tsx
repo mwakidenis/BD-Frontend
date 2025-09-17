@@ -181,7 +181,7 @@ const UserProfile = ({
           {/* Left Column - Profile Info */}
           <div className="lg:col-span-1 space-y-6">
             <Card className="shadow-lg border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
-              <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-t-lg">
+              <CardHeader className="p-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-t-lg">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <User className="w-5 h-5" />
                   Profile Information
@@ -211,7 +211,7 @@ const UserProfile = ({
 
             {/* Delivery Address */}
             <Card className="shadow-lg border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
-              <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+              <CardHeader className="p-4 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <MapPinIcon className="w-5 h-5" />
                   Delivery Address
@@ -247,7 +247,7 @@ const UserProfile = ({
           <div className="lg:col-span-2 space-y-6">
             {/* Orders Section */}
             <Card className="shadow-lg border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
-              <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-t-lg">
+              <CardHeader className="p-4 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-t-lg">
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Package className="w-5 h-5" />
@@ -307,9 +307,11 @@ const UserProfile = ({
                     <p className="text-gray-500 dark:text-gray-400 mb-4">
                       No orders placed yet
                     </p>
-                    <Button className="bg-blue-600 hover:bg-blue-700">
-                      Start Shopping
-                    </Button>
+                    <Link href={"/shop"}>
+                      <Button className="bg-blue-600 hover:bg-blue-700">
+                        Start Shopping
+                      </Button>
+                    </Link>
                   </div>
                 )}
               </CardContent>
@@ -317,7 +319,7 @@ const UserProfile = ({
 
             {/* Reviews Section */}
             <Card className="shadow-lg border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-t-lg">
+              <CardHeader className="p-4 bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-t-lg">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Star className="w-5 h-5" />
                   Your Reviews ({reviews?.length || 0})
