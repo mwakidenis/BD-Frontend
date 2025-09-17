@@ -130,7 +130,7 @@ const UpdateUserPasswordForm = () => {
       <div className="w-full max-w-md mx-auto px-4 py-6 sm:py-8">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
           {/* Card Header */}
-          <div className="bg-black/70s text-white p-6">
+          <div className="bg-black/70 text-white p-6">
             <div className="flex items-center space-x-3">
               <div className="bg-white/20 p-2 rounded-lg">
                 <Key className="h-5 w-5" />

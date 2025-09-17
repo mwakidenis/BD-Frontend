@@ -20,7 +20,7 @@ const UserProfilePage = async () => {
   const { data: userReviews } = await getSpecificUserProductReview(user.id);
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="">
       <UserProfile
         user={userInfo}
         orders={sanitizedOrders}
