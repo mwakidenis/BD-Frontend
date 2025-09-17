@@ -106,7 +106,7 @@ export default function MedicineCard({
               animate={{ scale: 1, rotate: 0 }}
               className="absolute top-3 left-3 z-10"
             >
-              <Badge className="bg-red-500 hover:bg-red-600 text-white font-bold px-3 py-1 text-sm shadow-lg">
+              <Badge className="bg-red-500/80 hover:bg-red-600 text-white font-semibold px-3 py-1 text-sm shadow-lg">
                 -{discount}% OFF
               </Badge>
             </motion.div>
@@ -182,21 +182,21 @@ export default function MedicineCard({
           </div>
 
           {/* Description */}
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 flex-grow leading-relaxed">
+          {/* <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 flex-grow leading-relaxed">
             {description.length > 80
               ? `${description.slice(0, 80)}...`
               : description}
-          </p>
+          </p> */}
 
           {/* Expiry Date */}
-          <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+          {/* <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
             <Calendar size={14} />
             <span className="font-medium">Exp: {expireDate}</span>
-          </div>
+          </div> */}
 
           {/* Action Buttons */}
           <div className="flex items-center justify-between gap-3 pt-2">
-            <Link href={`/medicine/${_id}`} className="flex-1">
+            <Link href={`/product/${_id}`} className="flex-1">
               <Button
                 variant="outline"
                 className="w-full hover:bg-primary hover:text-white transition-all duration-300 group/btn"
@@ -241,7 +241,7 @@ export default function MedicineCard({
                   <motion.div
                     initial={{ opacity: 0, scale: 0.5 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="absolute inset-0 bg-green-500 rounded-full flex items-center justify-center text-white"
+                    className="absolute inset-0 bg-green-700 rounded-full flex items-center justify-center text-white"
                   >
                     <motion.div
                       initial={{ scale: 0 }}

@@ -37,7 +37,7 @@ const Banner = () => {
             Quality mats and rugs designed to blend beauty with long-lasting
             comfort.
           </motion.p>
-          <Link href="/products">
+          <Link href="/shop">
             <motion.button
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
