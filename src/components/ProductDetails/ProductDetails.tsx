@@ -39,6 +39,7 @@ import { createReview } from "@/services/review";
 import { TMedicineResponse } from "@/types/product";
 import { TReview, TReviewResponse } from "@/types/review";
 import MedicineCard from "../shop/ProductCard";
+import Input2 from "../ui/Input2";
 
 export default function MedicineDetail({
   medicine,
@@ -132,7 +133,7 @@ export default function MedicineDetail({
   const savings = medicine.price - discountedPrice;
 
   return (
-    <div className="min-h-screen dark:from-slate-900 dark:to-blue-900">
+    <div className="min-h-screen dark:from-slate-900 dark:to-blue-900 my-10">
       <div className="max-w-7xl mx-auto px-4 pb-16">
         {/* Main Product Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
@@ -143,7 +144,7 @@ export default function MedicineDetail({
             transition={{ duration: 0.6 }}
             className="space-y-6"
           >
-            <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg">
+            <div className="relative bg-white dark:bg-slate-800 p-8 shadow-lg">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedImage}
@@ -194,19 +195,19 @@ export default function MedicineDetail({
             </div>
             {/* Features */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                 <Truck className="w-5 h-5 text-green-500" />
                 <span className="text-sm font-medium">Safe Delivery</span>
               </div>
-              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                 <Shield className="w-5 h-5 text-blue-500" />
                 <span className="text-sm font-medium">100% Authentic</span>
               </div>
-              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                 <Clock className="w-5 h-5 text-orange-500" />
                 <span className="text-sm font-medium">Fast Delivery</span>
               </div>
-              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
+              <div className="flex items-center gap-2 p-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
                 <CheckCircle className="w-5 h-5 text-purple-500" />
                 <span className="text-sm font-medium">Quality Assured</span>
               </div>
@@ -475,7 +476,7 @@ export default function MedicineDetail({
             transition={{ duration: 0.6 }}
             className="max-w-2xl mx-auto"
           >
-            <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+            <div className="bg-white dark:bg-slate-800 shadow-xl dark:border-slate-700 p-8">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                   Share Your Experience
@@ -501,7 +502,7 @@ export default function MedicineDetail({
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Summarize your experience..."
-                    className="mt-2 border-2 border-slate-200 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg"
+                    className="mt-2 border-2 border-slate-200 dark:border-slate-700 focus:border-gray-500 dark:focus:border-gray-400"
                   />
                 </div>
 
@@ -518,7 +519,7 @@ export default function MedicineDetail({
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Share your detailed experience with this medicine..."
                     rows={4}
-                    className="mt-2 border-2 border-slate-200 dark:border-slate-700 focus:border-blue-500 dark:focus:border-blue-400 rounded-lg resize-none"
+                    className="mt-2 border-2 border-slate-200 rounded-none dark:border-slate-700 focus:border-gray-500 dark:focus:border-gray-400 resize-none"
                   />
                 </div>
 
@@ -536,10 +537,10 @@ export default function MedicineDetail({
                         onClick={() => handleStarClick(star)}
                       >
                         <Star
-                          size={32}
+                          size={25}
                           className={`cursor-pointer transition-colors ${
                             rating >= star
-                              ? "text-yellow-400 fill-yellow-400"
+                              ? "text-yellow-600 fill-yellow-600"
                               : "text-slate-300 dark:text-slate-600 hover:text-yellow-200"
                           }`}
                         />
@@ -556,7 +557,7 @@ export default function MedicineDetail({
                 <Button
                   onClick={handleSubmit}
                   disabled={!rating || !title.trim() || !description.trim()}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full cursor-pointer"
                 >
                   Submit Review
                 </Button>
