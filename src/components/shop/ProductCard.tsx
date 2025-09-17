@@ -136,7 +136,7 @@ export default function MedicineCard({
           {/* Header Section */}
           <div className="space-y-2">
             <div className="flex justify-between items-start gap-2">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-300">
+              <h3 className="text-md min-h-[50px] font-semibold text-gray-900 dark:text-white line-clamp-2 leading-tight group-hover:text-primary transition-colors duration-300">
                 {name}
               </h3>
 
@@ -255,19 +255,6 @@ export default function MedicineCard({
               </div>
             )}
           </div>
-
-          {/* Low Stock Warning */}
-          {isLowStock && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-2 mt-2"
-            >
-              <p className="text-xs text-orange-700 dark:text-orange-300 font-medium text-center">
-                Only {quantity} items left in stock!
-              </p>
-            </motion.div>
-          )}
         </CardContent>
       </Card>
     </motion.div>

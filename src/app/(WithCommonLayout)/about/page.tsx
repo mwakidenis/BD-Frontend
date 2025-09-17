@@ -3,7 +3,7 @@ import { ShoppingBag, Users, Award, Truck, Shield, Heart } from "lucide-react";
 
 export default function AboutUs() {
   const stats = [
-    { number: "10,000+", label: "Happy Customers" },
+    { number: "10,000+", label: "Facebook follower" },
     { number: "500+", label: "Products" },
     { number: "50+", label: "Categories" },
     { number: "5+", label: "Years Experience" },
@@ -37,20 +37,20 @@ export default function AboutUs() {
 
   const team = [
     {
-      name: "Mohammad Rahman",
+      name: "##########",
       position: "Founder & CEO",
       image: "/api/placeholder/150/150",
       description:
         "Passionate about bringing authentic Bangladeshi products to every home.",
     },
     {
-      name: "Fatima Khatun",
+      name: "##########",
       position: "Product Manager",
       image: "/api/placeholder/150/150",
       description: "Expert in traditional crafts and quality assurance.",
     },
     {
-      name: "Abdul Karim",
+      name: "#########",
       position: "Operations Head",
       image: "/api/placeholder/150/150",
       description:
@@ -61,7 +61,7 @@ export default function AboutUs() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-red-600 to-pink-600 text-white py-16">
+      <div className="bg-gradient-to-r from-blue-900 to-pink-900 text-white my-16 py-11">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             About SoptokBD
@@ -98,7 +98,7 @@ export default function AboutUs() {
             <div className="grid grid-cols-2 gap-6">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-3xl font-bold text-red-600 mb-2">
+                  <div className="text-3xl font-bold text-red-950 mb-2">
                     {stat.number}
                   </div>
                   <div className="text-gray-600">{stat.label}</div>
@@ -186,7 +186,7 @@ export default function AboutUs() {
         </div>
 
         {/* Call to Action */}
-        <div className="bg-gradient-to-r from-red-600 to-pink-600 rounded-lg text-white p-8 text-center">
+        <div className="bg-gradient-to-r from-blue-900 to-pink-900 rounded-lg text-white p-8 text-center">
           <h2 className="text-3xl font-bold mb-4">Join Our Journey</h2>
           <p className="text-xl mb-6 opacity-90">
             Discover the beauty of Bangladeshi craftsmanship and be part of our

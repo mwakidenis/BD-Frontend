@@ -4,23 +4,21 @@ import { Toaster } from "sonner";
 import { Poppins } from "next/font/google";
 import Providers from "@/providers/Providers";
 import { Suspense } from "react";
-// import Providers from "../providers/Providers";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-poppins",
 });
-
-const poppinsClassName: string = poppins.className;
 
 export const metadata: Metadata = {
   title: "SoptokBD",
-  description: "",
-  keywords: [""],
+  description: "Your trusted online medicine store",
+  keywords: ["medicine", "pharmacy", "healthcare", "SoptokBD"],
   referrer: "origin-when-cross-origin",
   robots: "index, follow",
-  publisher: "",
+  publisher: "SoptokBD",
   authors: [
     {
       name: "SoptokBD",
@@ -35,10 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${poppinsClassName}  antialiased`}>
-        <Suspense>
-          <Providers>{children}</Providers>
+    <html lang="en" className={poppins.variable}>
+      <body className={`${poppins.className} antialiased`}>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Providers>
+            {children}
+            <Toaster position="top-right" />
+          </Providers>
         </Suspense>
       </body>
     </html>
