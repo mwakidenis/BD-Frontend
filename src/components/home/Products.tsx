@@ -5,23 +5,11 @@ import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { getHomePageMedicines } from "@/services/product";
+import { TMedicineResponse } from "@/types/product";
 
 // --- Types ---
-type Medicine = {
-  _id: string;
-  name: string;
-  description: string;
-  type: string;
-  requiredPrescription: boolean;
-  price: number;
-  discount: number;
-  expireDate: string;
-  quantity: number;
-  imageUrl: string;
-};
-
 type MedicineCardProps = {
-  medicine: Medicine;
+  medicine: TMedicineResponse;
 };
 
 // --- Medicine Card ---
@@ -37,9 +25,14 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
   // Check if medicine is expired
   const isExpired = new Date(medicine.expireDate) < new Date();
 
-  // Check stock status
-  const stockStatus = medicine.quantity <= 5 ? "Limited Stock" : "Available";
-  const isOutOfStock = medicine.quantity === 0;
+  // Check stock status based on inStock boolean and quantity
+  const stockStatus =
+    !medicine.inStock || medicine.quantity === 0
+      ? "Out of Stock"
+      : medicine.quantity <= 5
+      ? "Limited Stock"
+      : "Available";
+  const isOutOfStock = !medicine.inStock || medicine.quantity === 0;
 
   return (
     <div
@@ -53,7 +46,7 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           hover ? "scale-105" : ""
         } ${isExpired || isOutOfStock ? "grayscale" : ""}`}
         style={{
-          backgroundImage: `url(${medicine.imageUrl})`,
+          backgroundImage: `url(${medicine.imageUrl[0] || ""})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           width: "80%",
@@ -62,21 +55,21 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
 
       {/* Expired/Out of Stock Overlay */}
       {(isExpired || isOutOfStock) && (
-        <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded z-20">
+        <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold  z-20">
           {isExpired ? "EXPIRED" : "OUT OF STOCK"}
         </div>
       )}
 
       {/* Prescription Required Badge */}
       {medicine.requiredPrescription && (
-        <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold rounded z-20">
+        <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold  z-20">
           Rx REQUIRED
         </div>
       )}
 
       {/* Discount Badge */}
-      {medicine.discount > 0 && (
-        <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded z-20">
+      {medicine.discount > 0 && !isExpired && !isOutOfStock && (
+        <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs font-semibold  z-20">
           {medicine.discount}% OFF
         </div>
       )}
@@ -130,7 +123,7 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
 
         {/* View Details */}
         <Link
-          href={`/medicine/${medicine._id}`}
+          href={`/product/${medicine._id}`}
           className={`w-[80%] border border-white text-white text-center transition-all duration-500 ${
             hover
               ? "h-[40px] text-base"
@@ -165,7 +158,7 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
 
 // --- Section Component ---
 export default function MedicineSection() {
-  const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const [medicines, setMedicines] = useState<TMedicineResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -209,7 +202,7 @@ export default function MedicineSection() {
     return (
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Explore Our Medicine Collections
+          Explore Our Collections
         </h2>
         <div className="text-center text-red-500 text-lg">{error}</div>
       </section>
@@ -250,7 +243,7 @@ export default function MedicineSection() {
         className="text-center mt-10"
       >
         <Link
-          href="/medicines"
+          href="/shop"
           className="bg-black text-white font-semibold px-10 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 inline-block"
         >
           Browse All Medicines
