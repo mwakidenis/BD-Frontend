@@ -4,7 +4,7 @@ import image from "../../assets/imageOne.jpg"; // Replace with a relevant Soptok
 
 const ExploreNow = () => {
   return (
-    <div className="bgImage bg-fixed bg-teal-900 text-white py-16 my-20">
+    <div className="bgImage bg-fixed bg-teal-900 text-white py-16">
       <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
         {/* Image Section */}
         <div className="flex-1">

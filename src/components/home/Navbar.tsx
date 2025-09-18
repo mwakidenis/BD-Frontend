@@ -24,10 +24,14 @@ import {
   Settings,
   LogOut,
   ChevronDown,
+  ShoppingCart,
 } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { clearCart, totalQuantitySelector } from "@/redux/features/cartSlice";
+import { protectedRoutes } from "@/constants";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -35,6 +39,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const userContext = useUser();
+  const dispatch = useAppDispatch();
+  const totalQuantity = useAppSelector(totalQuantitySelector);
 
   // Safely destructure with fallbacks
   const user = userContext?.user || null;
@@ -59,8 +65,15 @@ export default function Navbar() {
       // await logoutUser();
 
       setUser(null);
+      dispatch(clearCart());
       toast.success("Logged out successfully", { duration: 1400 });
-      router.push("/login");
+
+      // Check if current page is protected and redirect if needed
+      if (protectedRoutes.some((route) => pathname.match(route))) {
+        router.push("/");
+      } else {
+        router.push("/login");
+      }
     } catch (error) {
       console.error("Logout error:", error);
       toast.error("Logout failed");
@@ -71,7 +84,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Shop", href: "/shop" },
+    { name: "Medicines", href: "/shop" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
     { name: "FAQ", href: "/faq" },
@@ -79,7 +92,7 @@ export default function Navbar() {
 
   const mobileNavLinks = [
     { name: "Home", href: "/", icon: Home },
-    { name: "Shop", href: "/shop", icon: ShoppingBag },
+    { name: "Medicines", href: "/shop", icon: ShoppingBag },
     { name: "About", href: "/about", icon: Building2 },
     { name: "Contact", href: "/contact", icon: Mail },
     { name: "FAQ", href: "/faq", icon: HelpCircle },
@@ -135,8 +148,27 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Desktop Right Side - Dashboard and User/Login */}
+          {/* Desktop Right Side - Cart, Dashboard and User/Login */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Cart */}
+            <motion.div whileHover={{ scale: 1.05 }} className="relative">
+              <Link
+                href="/cart"
+                className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${
+                  pathname === "/cart"
+                    ? "text-primary font-semibold bg-primary/10"
+                    : "text-gray-700 hover:text-teal-800 hover:bg-gray-100"
+                }`}
+              >
+                <ShoppingCart className="w-6 h-6" />
+                {totalQuantity > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-semibold">
+                    {totalQuantity}
+                  </span>
+                )}
+              </Link>
+            </motion.div>
+
             {/* Dashboard Button - only show if user is logged in */}
             {user && (
               <motion.div
@@ -336,6 +368,38 @@ export default function Navbar() {
                   </Link>
                 </motion.div>
               ))}
+
+              {/* Mobile Cart */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <Link
+                  href="/cart"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`flex items-center justify-between p-3 rounded-lg transition-colors ${
+                    pathname === "/cart"
+                      ? "text-primary font-semibold bg-primary/10"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <ShoppingCart
+                      size={20}
+                      className={
+                        pathname === "/cart" ? "text-primary" : "text-teal-800"
+                      }
+                    />
+                    <span className="font-medium text-gray-700">Cart</span>
+                  </div>
+                  {totalQuantity > 0 && (
+                    <span className="bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-semibold">
+                      {totalQuantity}
+                    </span>
+                  )}
+                </Link>
+              </motion.div>
 
               <div className="pt-4 border-t space-y-2">
                 {/* Mobile Dashboard Button - only show if user is logged in */}

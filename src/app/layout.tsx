@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "sonner";
 import { Poppins } from "next/font/google";
 import Providers from "@/providers/Providers";
 import { Suspense } from "react";
@@ -36,10 +35,7 @@ export default function RootLayout({
     <html lang="en" className={poppins.variable}>
       <body className={`${poppins.className} antialiased`}>
         <Suspense fallback={<div>Loading...</div>}>
-          <Providers>
-            {children}
-            <Toaster position="top-right" />
-          </Providers>
+          <Providers>{children}</Providers>
         </Suspense>
       </body>
     </html>
