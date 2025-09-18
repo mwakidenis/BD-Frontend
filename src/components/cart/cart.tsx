@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Trash2, Plus, Minus, ImageUp } from "lucide-react";
+import { Trash2, Plus, Minus, ImageUp, ShoppingCart } from "lucide-react";
 import {
   addOrderInfo,
   addPrescription,
@@ -310,8 +310,8 @@ const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
         </div>
       ) : (
         <div className=" min-h-[50vh] flex justify-center items-center">
-          <p className="text-yellow-700 font-semibold text-2xl">
-            No Items in Cart
+          <p className="text-black font-semibold text-2xl">
+            No Items in Cart <ShoppingCart size={100} />
           </p>
         </div>
       )}

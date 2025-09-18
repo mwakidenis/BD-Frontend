@@ -158,7 +158,7 @@ const ManageProduct = ({
     },
     {
       accessorKey: "requiredPrescription",
-      header: () => <div>Prescription</div>,
+      header: () => <div>Kupon Code</div>,
       cell: ({ row }) => (
         <div className="text-center flex justify-center items-center">
           {row.original.requiredPrescription ? (
