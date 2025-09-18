@@ -84,7 +84,7 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Medicines", href: "/shop" },
+    { name: "Shop", href: "/shop" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
     { name: "FAQ", href: "/faq" },
@@ -92,7 +92,7 @@ export default function Navbar() {
 
   const mobileNavLinks = [
     { name: "Home", href: "/", icon: Home },
-    { name: "Medicines", href: "/shop", icon: ShoppingBag },
+    { name: "Shop", href: "/shop", icon: ShoppingBag },
     { name: "About", href: "/about", icon: Building2 },
     { name: "Contact", href: "/contact", icon: Mail },
     { name: "FAQ", href: "/faq", icon: HelpCircle },
