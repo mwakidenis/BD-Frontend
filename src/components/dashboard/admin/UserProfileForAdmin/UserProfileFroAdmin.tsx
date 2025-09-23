@@ -3,14 +3,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  User,
-  Mail,
-  BadgeCheck,
-  ShoppingCart,
-  Star,
-  Truck,
-} from "lucide-react";
+import { BadgeCheck, Mail, ShoppingCart, Star, Truck } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { IUser } from "@/types/user";
@@ -36,89 +29,97 @@ const UserProfileForAdmin = ({
   }
 
   return (
-    <div className="w-full px-2 md:px-4 py-6 space-y-10">
+    <div className="w-full px-3 md:px-6 py-8 space-y-12 dark:from-gray-900 dark:to-gray-950 min-h-screen">
       {/* User Info */}
       <MotionCard
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="max-w-2xl border-none rounded-3xl shadow-lg mx-auto p-6 bg-white dark:bg-gray-800"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-3xl mx-auto rounded-2xl shadow-2xl border border-slate-200/60 dark:border-gray-700/60 bg-gradient-to-tr from-white to-slate-50 dark:from-gray-800 dark:to-gray-900"
       >
-        <CardHeader className="flex items-center flex-col space-y-4">
-          <Avatar className="w-24 h-24 border-4 border-blue-100 shadow-md dark:border-gray-600">
+        <CardHeader className="flex flex-col items-center space-y-4 text-center">
+          <Avatar className="w-28 h-28 border-4 border-blue-500/30 shadow-md">
             <AvatarImage src={""} alt={user.name || "User"} />
-            <AvatarFallback className="bg-blue-100 text-blue-800 text-2xl dark:bg-gray-700 dark:text-white">
+            <AvatarFallback className="bg-blue-100 text-blue-800 text-3xl dark:bg-gray-700 dark:text-white">
               {user.name?.[0]?.toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <CardTitle className="text-3xl font-bold text-slate-800 dark:text-white">
+          <CardTitle className="text-3xl font-extrabold text-blue-700 dark:text-blue-300 tracking-wide">
             {user.name?.toUpperCase()}
           </CardTitle>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
+            Admin Panel User Profile
+          </p>
         </CardHeader>
 
-        <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-4 pb-6">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-6 pb-8">
           <InfoItem
-            icon={<BadgeCheck size={18} />}
+            icon={<BadgeCheck size={20} />}
             label="Role"
             value={user.role}
           />
           <InfoItem
-            icon={<Mail size={18} />}
+            icon={<Mail size={20} />}
             label="Email"
             value={user.email}
           />
-          {/* <InfoItem icon={<User size={18} />} label="Phone" value={user.phone || 'Not provided'} /> */}
         </CardContent>
       </MotionCard>
 
       {/* Last Order Summary */}
       {hasOrders && lastOrder && (
         <MotionCard
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="max-w-5xl p-6 rounded-3xl mx-auto border shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700"
+          transition={{ duration: 0.6 }}
+          className="max-w-5xl mx-auto rounded-2xl shadow-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800"
         >
           <CardHeader>
-            <CardTitle className="text-xl text-slate-800 dark:text-white">
-              Last Order History
+            <CardTitle className="text-2xl font-bold text-slate-800 dark:text-white">
+              Last Order Overview
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-4 pb-6">
-            <InfoItem
-              icon={<ShoppingCart size={18} />}
-              label="Total Products"
+          <CardContent className="grid grid-cols-2 sm:grid-cols-4 gap-6 px-6 pb-8">
+            <StatBox
+              icon={<ShoppingCart />}
+              label="Products"
               value={lastOrder.products.length}
             />
-            <InfoItem
-              icon={<Star size={18} />}
-              label="Total Revenue"
+            <StatBox
+              icon={<Star />}
+              label="Revenue"
               value={`৳${lastOrder.totalPrice}`}
             />
-            <InfoItem
-              icon={<BadgeCheck size={18} />}
-              label="Payment Status"
+            <StatBox
+              icon={<BadgeCheck />}
+              label="Payment"
               value={
-                <span
-                  className={`text-sm font-medium px-1 rounded-sm text-white ${
-                    lastOrder.paymentStatus ? "bg-green-600" : "bg-yellow-700"
-                  }`}
-                >
-                  {lastOrder.paymentStatus ? "Paid" : "Unpaid"}
-                </span>
+                lastOrder.paymentStatus ? (
+                  <span className="px-2 py-1 text-xs rounded-full bg-green-600 text-white">
+                    Paid
+                  </span>
+                ) : (
+                  <span className="px-2 py-1 text-xs rounded-full bg-yellow-600 text-white">
+                    Unpaid
+                  </span>
+                )
               }
             />
-            <InfoItem
-              icon={<Truck size={18} />}
-              label="Order Status"
+            <StatBox
+              icon={<Truck />}
+              label="Status"
               value={
                 <span
                   className={cn(
-                    "text-sm font-medium px-1 rounded-sm dark:bg-gray-700",
-                    lastOrder.orderStatus === "pending" && "text-yellow-700",
-                    lastOrder.orderStatus === "shipped" && "text-blue-700",
-                    lastOrder.orderStatus === "delivered" && "text-green-700",
-                    lastOrder.orderStatus === "cancelled" && "text-red-700"
+                    "px-2 py-1 text-xs rounded-full font-medium",
+                    lastOrder.orderStatus === "pending" &&
+                      "bg-yellow-200 text-yellow-800",
+                    lastOrder.orderStatus === "shipped" &&
+                      "bg-blue-200 text-blue-800",
+                    lastOrder.orderStatus === "delivered" &&
+                      "bg-green-200 text-green-800",
+                    lastOrder.orderStatus === "cancelled" &&
+                      "bg-red-200 text-red-800"
                   )}
                 >
                   {lastOrder.orderStatus.charAt(0).toUpperCase() +
@@ -134,23 +135,23 @@ const UserProfileForAdmin = ({
       <MotionCard
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="max-w-6xl p-6 mx-auto rounded-3xl border shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700"
+        transition={{ duration: 0.7 }}
+        className="max-w-6xl mx-auto rounded-2xl shadow-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800"
       >
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 dark:text-white">
+          <CardTitle className="text-2xl font-semibold text-slate-800 dark:text-white">
             User Orders
           </CardTitle>
         </CardHeader>
-        <CardContent className="overflow-x-auto px-4 pb-6">
+        <CardContent className="overflow-x-auto px-6 pb-6">
           <table className="min-w-full text-sm text-slate-700 dark:text-gray-200">
             <thead>
               <tr className="text-left border-b border-slate-200 dark:border-gray-600">
-                <th className="py-2 pr-4">ID</th>
-                <th className="py-2 pr-4">Date</th>
-                <th className="py-2 pr-4">Status</th>
-                <th className="py-2 pr-4">Total</th>
-                <th className="py-2 pr-4">Order Details</th>
+                <th className="py-2 px-3">ID</th>
+                <th className="py-2 px-3">Date</th>
+                <th className="py-2 px-3">Status</th>
+                <th className="py-2 px-3">Total</th>
+                <th className="py-2 px-3">Details</th>
               </tr>
             </thead>
             <tbody>
@@ -158,30 +159,34 @@ const UserProfileForAdmin = ({
                 orders.map((order) => (
                   <tr
                     key={order._id}
-                    className="border-b transition-colors hover:bg-blue-50 dark:hover:bg-gray-700 dark:border-gray-600"
+                    className="border-b dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
-                    <td className="py-2 pr-4">{order._id}</td>
-                    <td className="py-2 pr-4">
+                    <td className="py-2 px-3 font-mono text-xs">{order._id}</td>
+                    <td className="py-2 px-3">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="py-2 pr-4 font-semibold">
+                    <td className="py-2 px-3">
                       <span
                         className={cn(
-                          "px-2 py-1 rounded text-sm",
-                          order.orderStatus === "pending" && "text-yellow-600",
-                          order.orderStatus === "shipped" && "text-blue-600",
-                          order.orderStatus === "delivered" && "text-green-600",
-                          order.orderStatus === "cancelled" && "text-red-600"
+                          "px-2 py-1 rounded-full text-xs font-medium",
+                          order.orderStatus === "pending" &&
+                            "bg-yellow-100 text-yellow-700",
+                          order.orderStatus === "shipped" &&
+                            "bg-blue-100 text-blue-700",
+                          order.orderStatus === "delivered" &&
+                            "bg-green-100 text-green-700",
+                          order.orderStatus === "cancelled" &&
+                            "bg-red-100 text-red-700"
                         )}
                       >
                         {order.orderStatus.charAt(0).toUpperCase() +
                           order.orderStatus.slice(1)}
                       </span>
                     </td>
-                    <td className="py-2 pr-4">৳{order.totalPrice}</td>
-                    <td className="py-2 pr-4">
-                      <Button variant="outline">
-                        <Link href={`/admin/orders/${order._id}`}>More</Link>
+                    <td className="py-2 px-3">৳{order.totalPrice}</td>
+                    <td className="py-2 px-3">
+                      <Button variant="secondary" size="sm">
+                        <Link href={`/admin/orders/${order._id}`}>View</Link>
                       </Button>
                     </td>
                   </tr>
@@ -190,9 +195,9 @@ const UserProfileForAdmin = ({
                 <tr>
                   <td
                     colSpan={5}
-                    className="text-center py-4 text-gray-500 dark:text-gray-400"
+                    className="text-center py-6 text-gray-500 dark:text-gray-400"
                   >
-                    No orders found for this user.
+                    No orders found.
                   </td>
                 </tr>
               )}
@@ -205,25 +210,25 @@ const UserProfileForAdmin = ({
       <MotionCard
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="max-w-6xl p-3 mx-auto rounded-3xl border shadow-sm bg-white dark:bg-gray-800 dark:border-gray-700"
+        transition={{ duration: 0.8 }}
+        className="max-w-6xl mx-auto rounded-2xl shadow-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800"
       >
         <CardHeader>
-          <CardTitle className="text-xl text-slate-800 dark:text-white">
+          <CardTitle className="text-2xl font-semibold text-slate-800 dark:text-white">
             User Reviews
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4 px-4 pb-6">
+        <CardContent className="grid gap-4 px-6 pb-8">
           {reviews.length > 0 ? (
             reviews.map((review) => (
               <div
                 key={review._id}
-                className="border rounded-lg p-4 bg-slate-50 hover:bg-slate-100 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors"
+                className="border rounded-xl p-4 shadow-sm bg-slate-50 dark:bg-gray-700 hover:shadow-md transition"
               >
-                <p className="font-semibold text-blue-700 dark:text-blue-400">
+                <p className="font-semibold text-blue-700 dark:text-blue-400 mb-1">
                   {review.title}
                 </p>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                   {review.description}
                 </p>
                 {review.rating && (
@@ -235,8 +240,8 @@ const UserProfileForAdmin = ({
               </div>
             ))
           ) : (
-            <p className="text-gray-500 dark:text-gray-300">
-              This user hasn't left any reviews yet.
+            <p className="text-gray-500 dark:text-gray-300 text-center py-4">
+              This user hasn’t left any reviews yet.
             </p>
           )}
         </CardContent>
@@ -256,15 +261,29 @@ const InfoItem = ({
   label: string;
   value: React.ReactNode;
 }) => (
-  <div className="flex items-start space-x-3">
-    <div className="text-blue-600 mt-1 dark:text-blue-400">{icon}</div>
+  <div className="flex items-center space-x-3">
+    <div className="text-blue-600 dark:text-blue-400">{icon}</div>
     <div>
-      <p className="text-sm text-muted-foreground dark:text-gray-400">
-        {label}
-      </p>
-      <p className="text-base font-medium text-slate-800 break-words sm:break-after-avoid dark:text-white">
+      <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="text-base font-semibold text-slate-800 dark:text-white">
         {value || "—"}
       </p>
     </div>
+  </div>
+);
+
+const StatBox = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+}) => (
+  <div className="flex flex-col items-center justify-center p-4 rounded-xl bg-slate-100 dark:bg-gray-700 shadow-inner">
+    <div className="text-blue-600 dark:text-blue-400 mb-2">{icon}</div>
+    <p className="text-xs text-gray-500 dark:text-gray-300">{label}</p>
+    <p className="text-sm font-bold text-slate-800 dark:text-white">{value}</p>
   </div>
 );
