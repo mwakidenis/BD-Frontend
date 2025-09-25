@@ -2,12 +2,12 @@ export const dynamic = "force-dynamic";
 
 import AdminDashboard from "@/components/dashboard/admin/AdminDashboard/AdminDashboard";
 import { getAllOrder } from "@/services/order";
-import { getAllMedicine } from "@/services/product";
+import { getAllProduct } from "@/services/product";
 import { getAllUser } from "@/services/user";
 
 const AdminDashboardPage = async () => {
   const [orders, users] = await Promise.all([getAllOrder(), getAllUser()]);
-  const { data, meta } = await getAllMedicine();
+  const { data, meta } = await getAllProduct();
   return (
     <div>
       <AdminDashboard

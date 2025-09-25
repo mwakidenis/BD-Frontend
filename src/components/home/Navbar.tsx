@@ -20,8 +20,6 @@ import {
   HelpCircle,
   Menu,
   X,
-  User,
-  Settings,
   LogOut,
   ChevronDown,
   ShoppingCart,
@@ -42,13 +40,9 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
   const totalQuantity = useAppSelector(totalQuantitySelector);
 
-  // Safely destructure with fallbacks
   const user = userContext?.user || null;
   const setUser = userContext?.setUser || (() => {});
   const setIsLoading = userContext?.setIsLoading || (() => {});
-
-  // Temporarily disabled lastLogin until user type includes iat
-  // const lastLogin = user?.iat ? new Date(Number(user.iat) * 1000) : null;
   const lastLogin = null;
 
   useEffect(() => {
@@ -60,15 +54,9 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       setIsLoading(true);
-
-      // Call logout API if available
-      // await logoutUser();
-
       setUser(null);
       dispatch(clearCart());
       toast.success("Logged out successfully", { duration: 1400 });
-
-      // Check if current page is protected and redirect if needed
       if (protectedRoutes.some((route) => pathname.match(route))) {
         router.push("/");
       } else {
@@ -97,6 +85,20 @@ export default function Navbar() {
     { name: "Contact", href: "/contact", icon: Mail },
     { name: "FAQ", href: "/faq", icon: HelpCircle },
   ];
+
+  const displayRole =
+    user?.role === "superAdmin"
+      ? "Super Admin"
+      : user?.role === "admin"
+      ? "Business Role"
+      : user?.role || "User";
+
+  const dashboardRoute =
+    user?.role === "superAdmin"
+      ? "/superAdmin"
+      : user?.role === "admin"
+      ? "/admin"
+      : "/user";
 
   return (
     <motion.nav
@@ -148,7 +150,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Desktop Right Side - Cart, Dashboard and User/Login */}
+          {/* Desktop Right Side */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Cart */}
             <motion.div whileHover={{ scale: 1.05 }} className="relative">
@@ -169,16 +171,16 @@ export default function Navbar() {
               </Link>
             </motion.div>
 
-            {/* Dashboard Button - only show if user is logged in */}
+            {/* Dashboard Button */}
             {user && (
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href={user?.role === "admin" ? "/admin" : "/user"}>
+                <Link href={dashboardRoute}>
                   <Button
                     className={`px-6 py-2 transition-colors ${
-                      pathname === (user?.role === "admin" ? "/admin" : "/user")
+                      pathname === dashboardRoute
                         ? "bg-primary text-white"
                         : "bg-black hover:bg-teal-950 text-white"
                     }`}
@@ -189,7 +191,7 @@ export default function Navbar() {
               </motion.div>
             )}
 
-            {/* User Section */}
+            {/* User Dropdown */}
             {user ? (
               <div className="relative">
                 <DropdownMenu>
@@ -209,7 +211,7 @@ export default function Navbar() {
                           {user?.name || "User"}
                         </p>
                         <p className="text-xs text-primary capitalize font-medium">
-                          {user?.role || "User"}
+                          {displayRole}
                         </p>
                       </div>
                       <ChevronDown className="w-4 h-4 text-gray-500" />
@@ -221,7 +223,7 @@ export default function Navbar() {
                     sideOffset={8}
                     avoidCollisions={true}
                   >
-                    {/* User Info Header */}
+                    {/* User Info */}
                     <div className="px-3 py-2 border-b">
                       <div className="flex items-center gap-3">
                         <Avatar className="w-10 h-10 border-2 border-white shadow-sm">
@@ -246,10 +248,9 @@ export default function Navbar() {
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600">Role:</span>
                         <span className="bg-primary/10 text-primary px-2 py-1 rounded-full capitalize font-medium">
-                          {user?.role || "User"}
+                          {displayRole}
                         </span>
                       </div>
-
                       {lastLogin && (
                         <div className="flex items-center justify-between">
                           <span className="text-gray-600">Last Login:</span>
@@ -258,7 +259,6 @@ export default function Navbar() {
                           </span>
                         </div>
                       )}
-
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600">Status:</span>
                         <span className="text-green-600 flex items-center gap-1 font-medium">
@@ -268,7 +268,7 @@ export default function Navbar() {
                       </div>
                     </div>
 
-                    {/* Menu Actions */}
+                    {/* Logout */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={handleLogout}
@@ -281,31 +281,20 @@ export default function Navbar() {
                 </DropdownMenu>
               </div>
             ) : (
-              /* Not logged in - Show Login and Sign Up buttons */
               <div className="flex items-center space-x-2">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link href="/login">
-                    <Button className="bg-primary text-white hover:bg-primary/90 px-6 py-2">
-                      Login
-                    </Button>
-                  </Link>
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Link href="/signup">
-                    <Button
-                      variant="outline"
-                      className="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2"
-                    >
-                      Sign Up
-                    </Button>
-                  </Link>
-                </motion.div>
+                <Link href="/login">
+                  <Button className="bg-primary text-white hover:bg-primary/90 px-6 py-2">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/signup">
+                  <Button
+                    variant="outline"
+                    className="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2"
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
               </div>
             )}
           </div>
@@ -337,7 +326,6 @@ export default function Navbar() {
             className="md:hidden bg-white/95 backdrop-blur-md border-t"
           >
             <div className="px-4 py-4 space-y-2">
-              {/* Navigation Links */}
               {mobileNavLinks.map((link, index) => (
                 <motion.div
                   key={link.href}
@@ -402,7 +390,6 @@ export default function Navbar() {
               </motion.div>
 
               <div className="pt-4 border-t space-y-2">
-                {/* Mobile Dashboard Button - only show if user is logged in */}
                 {user && (
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -410,13 +397,12 @@ export default function Navbar() {
                     transition={{ delay: 0.5 }}
                   >
                     <Link
-                      href={user?.role === "admin" ? "/admin" : "/user"}
+                      href={dashboardRoute}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       <Button
                         className={`w-full transition-colors ${
-                          pathname ===
-                          (user?.role === "admin" ? "/admin" : "/user")
+                          pathname === dashboardRoute
                             ? "bg-primary hover:bg-primary/90 text-white"
                             : "bg-black hover:bg-teal-950 text-white"
                         }`}
@@ -427,7 +413,6 @@ export default function Navbar() {
                   </motion.div>
                 )}
 
-                {/* Mobile User Section */}
                 {user ? (
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -451,7 +436,7 @@ export default function Navbar() {
                           {user?.email || "No email"}
                         </p>
                         <p className="text-xs text-primary capitalize font-medium">
-                          {user?.role || "User"}
+                          {displayRole}
                         </p>
                       </div>
                     </div>
@@ -475,7 +460,7 @@ export default function Navbar() {
                       </div>
                     </div>
 
-                    {/* User Actions */}
+                    {/* Logout */}
                     <div className="space-y-1">
                       <button
                         onClick={() => {
@@ -490,7 +475,6 @@ export default function Navbar() {
                     </div>
                   </motion.div>
                 ) : (
-                  /* Not logged in - Mobile Login/Signup */
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}

@@ -75,7 +75,7 @@ const UserProfileForAdmin = ({
           className="max-w-5xl mx-auto rounded-2xl shadow-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800"
         >
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-slate-800 dark:text-white">
+            <CardTitle className="text-2xl font-bold text-slate-800 dark:text-white my-5">
               Last Order Overview
             </CardTitle>
           </CardHeader>
@@ -185,7 +185,7 @@ const UserProfileForAdmin = ({
                     </td>
                     <td className="py-2 px-3">৳{order.totalPrice}</td>
                     <td className="py-2 px-3">
-                      <Button variant="secondary" size="sm">
+                      <Button className="bg-blue-600" size="sm">
                         <Link href={`/admin/orders/${order._id}`}>View</Link>
                       </Button>
                     </td>

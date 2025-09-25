@@ -121,7 +121,9 @@ export function AppSidebar({ items }: { items: TItem[] }) {
                     Role:
                   </span>
                   <span className="bg-primary/10 text-primary px-2 py-1 rounded-full capitalize font-medium">
-                    {user?.role || "User"}
+                    {user?.role === "admin"
+                      ? "Business Role"
+                      : user?.role || "User"}
                   </span>
                 </div>
 

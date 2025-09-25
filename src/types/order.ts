@@ -8,7 +8,6 @@ export interface IProduct {
   name: string;
   quantity: number;
   price: number;
-  requiredPrescription: boolean;
 }
 
 export interface IOrderResponse {
@@ -17,9 +16,7 @@ export interface IOrderResponse {
   name: string;
   email: string;
   createdAt: string;
-  prescription?: string;
   updatedAt: string;
-  prescriptionReviewStatus: "pending" | "ok" | "cancelled";
   orderStatus: "pending" | "shipped" | "delivered" | "cancelled";
   paymentStatus: boolean;
   products: IProduct[];

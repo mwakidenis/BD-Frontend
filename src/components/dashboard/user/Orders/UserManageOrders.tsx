@@ -280,33 +280,6 @@ const UserManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
         </div>
       ),
     },
-    {
-      id: "actions",
-      header: "Actions",
-      cell: ({ row }) => (
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => handlePayment(row.original._id)}
-            className="text-xs px-3 py-1 hover:bg-blue-50 hover:text-blue-700 hover:border-blue-300 transition-colors"
-          >
-            <Eye className="w-3 h-3 mr-1" />
-            View
-          </Button>
-          {!row.original.paymentStatus && (
-            <Button
-              size="sm"
-              onClick={() => handlePayment(row.original._id)}
-              className="text-xs px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white"
-            >
-              <CreditCard className="w-3 h-3 mr-1" />
-              Pay
-            </Button>
-          )}
-        </div>
-      ),
-    },
   ];
 
   const getOrderSummary = () => {

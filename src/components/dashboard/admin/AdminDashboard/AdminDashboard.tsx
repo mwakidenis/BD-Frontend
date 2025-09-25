@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { IOrderResponse } from "@/types/order";
 import { IUser } from "@/types/user";
-import { TMedicineResponse } from "@/types/product";
+import { TProductResponse } from "@/types/product";
 import { OrderStatusBar } from "../OrderStatusBar/OrderStatusBar";
 
 const AdminDashboard = ({
@@ -25,7 +25,7 @@ const AdminDashboard = ({
 }: {
   orders: IOrderResponse[];
   users: IUser[];
-  products: TMedicineResponse[];
+  products: TProductResponse[];
   totalProducts: number;
 }) => {
   console.log(totalProducts);
@@ -45,9 +45,6 @@ const AdminDashboard = ({
   const cancelledOrders = orders?.filter(
     (order) => order.orderStatus === "cancelled"
   );
-  const prescriptionReviews = orders?.filter(
-    (order) => !order.paymentStatus && order.prescription
-  );
 
   const [duePayments, setDuePayments] = useState(2000);
 
@@ -56,13 +53,12 @@ const AdminDashboard = ({
     { name: "Shipped", value: shippedOrders.length },
     { name: "Delivered", value: deliveredOrders.length },
     { name: "Cancelled", value: cancelledOrders.length },
-    { name: "Due Payment", value: prescriptionReviews?.length },
   ];
 
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-semibold text-center mb-8 text-gray-900 dark:text-gray-100">
-        Admin Dashboard
+        Business Dashboard
       </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -204,23 +200,6 @@ const AdminDashboard = ({
             </div>
           </div>
         </Card>
-
-        {/* Due Payments */}
-        <Card className="group p-6 border-2 border-gray-200 bg-gradient-to-br from-white to-orange-50 dark:from-gray-800 dark:to-gray-900 dark:border-gray-700 hover:shadow-lg hover:border-orange-300 dark:hover:border-orange-600 transition-all duration-300 rounded-xl">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-                Due Payments
-              </h3>
-              <p className="text-3xl font-bold text-gray-900 dark:text-gray-50 mt-2">
-                {prescriptionReviews?.length}
-              </p>
-            </div>
-            <div className="p-3 bg-orange-100 dark:bg-orange-900/50 rounded-full group-hover:scale-110 transition-transform duration-300">
-              <CreditCard className="w-8 h-8 text-orange-600 dark:text-orange-400" />
-            </div>
-          </div>
-        </Card>
       </div>
 
       {/* Charts & Tables */}
@@ -228,10 +207,6 @@ const AdminDashboard = ({
       <div className="py-10">
         <OrderStatusBar orderStatusData={orderStatusData} />
       </div>
-
-      {/* <div className="py-10">
-      <DashboardProductsTable products={products} />
-    </div>  */}
     </div>
   );
 };

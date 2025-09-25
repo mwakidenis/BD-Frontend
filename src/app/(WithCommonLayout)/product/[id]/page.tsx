@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 
-import MedicineDetail from "@/components/ProductDetails/ProductDetails";
-import { getAllMedicine, getSingleMedicine } from "@/services/product";
+import ProductDetail from "@/components/ProductDetails/ProductDetails";
+import { getAllProduct, getSingleProduct } from "@/services/product";
 import { getSpecificProductReviews } from "@/services/review";
-import { TMedicineResponse } from "@/types/product";
+import { TProductResponse } from "@/types/product";
 import React from "react";
 
 export const generateMetadata = async ({
@@ -11,50 +11,50 @@ export const generateMetadata = async ({
 }: {
   params: Promise<{ id: string }>;
 }) => {
-  const medicineId = (await params).id;
-  const { data: medicine } = await getSingleMedicine(medicineId);
+  const productId = (await params).id;
+  const { data: product } = await getSingleProduct(productId);
 
-  if (!medicine) return { title: "Medicine Not Found" };
+  if (!product) return { title: "Product Not Found" };
 
   return {
-    title: medicine.name,
-    description: medicine.description,
+    title: product.name,
+    description: product.description,
     openGraph: {
-      title: medicine.name,
-      description: medicine.description,
-      images: medicine.imageUrl[0],
+      title: product.name,
+      description: product.description,
+      images: product.imageUrl[0],
     },
   };
 };
 
-const MedicineDetailPage = async ({
+const ProductDetailPage = async ({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) => {
-  const medicineId = (await params).id;
+  const productId = (await params).id;
 
-  const { data: medicine } = await getSingleMedicine(medicineId);
+  const { data: product } = await getSingleProduct(productId);
 
-  const { data: reviews } = await getSpecificProductReviews(medicineId);
+  const { data: reviews } = await getSpecificProductReviews(productId);
 
-  const { data: medicines } = await getAllMedicine();
+  const { data: products } = await getAllProduct();
 
-  const relatedMedicines =
-    medicines.filter(
-      (med: TMedicineResponse) =>
-        med.type === medicine.type && med._id !== medicine._id
+  const relatedproducts =
+    products.filter(
+      (med: TProductResponse) =>
+        med.category === product.category && med._id !== product._id
     ) || [];
 
   return (
     <div className="py-16">
-      <MedicineDetail
-        medicine={medicine}
+      <ProductDetail
+        product={product}
         reviews={reviews}
-        relatedMedicines={relatedMedicines}
+        relatedProducts={relatedproducts}
       />
     </div>
   );
 };
 
-export default MedicineDetailPage;
+export default ProductDetailPage;

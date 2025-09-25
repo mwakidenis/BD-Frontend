@@ -1,14 +1,15 @@
 export const dynamic = "force-dynamic";
 
-import CreateMedicineForm from "@/components/dashboard/admin/CreateProduct/CreateProductForm";
+import CreateTheProductForm from "@/components/dashboard/admin/CreateProduct/CreateProductForm";
+
 import React from "react";
 
-const CreateMedicinePage = () => {
+const CreateProductPage = () => {
   return (
     <div className="flex justify-center items-center">
-      <CreateMedicineForm />
+      <CreateTheProductForm />
     </div>
   );
 };
 
-export default CreateMedicinePage;
+export default CreateProductPage;

@@ -5,8 +5,7 @@ export interface ICartItem {
   quantity: number;
   price: number;
   image: string;
-  type: string;
-  prescription: boolean;
+  category: string;
 }
 
 export interface ICartState {
@@ -17,6 +16,5 @@ export interface ICartState {
     shippingAddress: string;
     shippingCity: string;
   };
-  prescriptionImage?: string;
   shippingCost?: number;
 }

@@ -1,42 +1,38 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { getAllMedicine } from "@/services/product";
-import { TMedicineResponse } from "@/types/product";
+import { getAllProduct } from "@/services/product";
+import { TProductResponse } from "@/types/product";
 
-// --- Medicine Card Props ---
-type MedicineCardProps = {
-  medicine: TMedicineResponse;
+// --- Product Card Props ---
+type ProductCardProps = {
+  product: TProductResponse;
 };
 
-// --- Medicine Card ---
-const MedicineCard: React.FC<MedicineCardProps> = ({ medicine }) => {
+// --- Product Card ---
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [hover, setHover] = useState(false);
 
   // Calculate discounted price
   const discountedPrice =
-    medicine.discount > 0
-      ? medicine.price - (medicine.price * medicine.discount) / 100
-      : medicine.price;
+    product.discount > 0
+      ? product.price - (product.price * product.discount) / 100
+      : product.price;
 
-  // Check if medicine is expired
-  const isExpired = new Date(medicine.expireDate) < new Date();
-
-  // Check stock status based on inStock boolean and quantity
+  // Stock status based on inStock boolean and quantity
   const stockStatus =
-    !medicine.inStock || medicine.quantity === 0
+    !product.inStock || product.quantity === 0
       ? "Out of Stock"
-      : medicine.quantity <= 5
+      : product.quantity <= 5
       ? "Limited Stock"
       : "Available";
-  const isOutOfStock = !medicine.inStock || medicine.quantity === 0;
+  const isOutOfStock = !product.inStock || product.quantity === 0;
 
   return (
     <div className="px-4">
@@ -46,43 +42,36 @@ const MedicineCard: React.FC<MedicineCardProps> = ({ medicine }) => {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        {/* Medicine Image */}
+        {/* Product Image */}
         <div
           style={{
-            backgroundImage: `url(${medicine.imageUrl[0] || ""})`,
+            backgroundImage: `url(${product.imageUrl[0] || ""})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             width: "80%",
           }}
           className={`h-[90%] relative mx-auto duration-[.4s] ${
             hover ? "scale-105" : ""
-          } ${isExpired || isOutOfStock ? "grayscale" : ""}`}
+          } ${isOutOfStock ? "grayscale" : ""}`}
         ></div>
 
-        {/* Expired/Out of Stock Overlay */}
-        {(isExpired || isOutOfStock) && (
+        {/* Out of Stock Overlay */}
+        {isOutOfStock && (
           <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold rounded z-20">
-            {isExpired ? "EXPIRED" : "OUT OF STOCK"}
-          </div>
-        )}
-
-        {/* Prescription Required Badge */}
-        {medicine.requiredPrescription && (
-          <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold rounded z-20">
-            Rx REQUIRED
+            OUT OF STOCK
           </div>
         )}
 
         {/* Discount Badge */}
-        {medicine.discount > 0 && !isExpired && !isOutOfStock && (
+        {product.discount > 0 && !isOutOfStock && (
           <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs font-semibold rounded z-20">
-            {medicine.discount}% OFF
+            {product.discount}% OFF
           </div>
         )}
 
-        {/* Medicine Name */}
+        {/* Product Name */}
         <div className="h-[50px] bg-[rgb(234_234_234)] w-full font-medium py-2 text-center">
-          {medicine.name}
+          {product.name}
         </div>
 
         {/* Hover Overlay */}
@@ -96,32 +85,32 @@ const MedicineCard: React.FC<MedicineCardProps> = ({ medicine }) => {
               hover ? "opacity-100" : "opacity-0"
             } duration-300`}
           >
-            <p className="text-sm font-semibold mb-1">{medicine.type}</p>
+            <p className="text-sm font-semibold mb-1">{product.category}</p>
             <div className="text-lg font-bold mb-1">
-              {medicine.discount > 0 ? (
+              {product.discount > 0 ? (
                 <>
                   <span className="line-through text-gray-300 text-sm mr-2">
-                    ৳ {medicine.price}
+                    ৳ {product.price}
                   </span>
                   <span>৳ {discountedPrice.toFixed(2)}</span>
                 </>
               ) : (
-                <span>৳ {medicine.price}</span>
+                <span>৳ {product.price}</span>
               )}
             </div>
             <p className="text-sm">
-              Stock: {medicine.quantity}{" "}
+              Stock: {product.quantity}{" "}
               <span
                 className={
-                  medicine.quantity <= 5 ? "text-orange-300" : "text-green-300"
+                  product.quantity <= 5 ? "text-orange-300" : "text-green-300"
                 }
               >
                 ({stockStatus})
               </span>
             </p>
-            {medicine.description && (
+            {product.description && (
               <p className="text-xs mt-1 opacity-80 line-clamp-2">
-                {medicine.description}
+                {product.description}
               </p>
             )}
           </div>
@@ -134,18 +123,18 @@ const MedicineCard: React.FC<MedicineCardProps> = ({ medicine }) => {
                 : "w-0 h-0 text-[0px] border-none duration-[.5s]"
             } duration-[.5s] hover:bg-white hover:text-black`}
             onClick={() => {
-              window.location.href = `/medicine/${medicine._id}`;
+              window.location.href = `/product/${product._id}`;
             }}
           >
             View Details
           </button>
 
           <button
-            disabled={isExpired || isOutOfStock}
+            disabled={isOutOfStock}
             className={`w-[80%] border border-white bg-transparent text-white cursor-pointer flex items-center justify-center gap-2 ${
               hover ? "h-[40px] text-base" : "w-0 h-0 text-[0px] border-none"
             } duration-[.5s] hover:bg-white hover:text-black ${
-              isExpired || isOutOfStock
+              isOutOfStock
                 ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-white"
                 : ""
             }`}
@@ -153,7 +142,7 @@ const MedicineCard: React.FC<MedicineCardProps> = ({ medicine }) => {
             <ShoppingCart
               className={`${hover ? "w-4 h-4" : "w-0 h-0"} duration-300`}
             />
-            {isExpired || isOutOfStock ? "Unavailable" : "Add To Cart"}
+            {isOutOfStock ? "Unavailable" : "Add To Cart"}
           </button>
         </div>
       </div>
@@ -162,41 +151,33 @@ const MedicineCard: React.FC<MedicineCardProps> = ({ medicine }) => {
 };
 
 // --- Section Component ---
-export default function BestSellingMedicines() {
+export default function BestSellingProducts() {
   const sliderRef = useRef<Slider | null>(null);
-  const [medicines, setMedicines] = useState<TMedicineResponse[]>([]);
+  const [products, setProducts] = useState<TProductResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMedicines = async () => {
+    const fetchProducts = async () => {
       try {
         setLoading(true);
-        const { data } = await getAllMedicine();
-        const allowedTypes = [
-          "Skin Care",
-          "Food",
-          "Baby",
-          "Tablet",
-          "Syrup",
-          "Capsule",
-        ];
-        const filteredMedicines =
-          data
-            ?.filter((med: TMedicineResponse) =>
-              allowedTypes.includes(med.type)
-            )
-            .slice(0, 8) || [];
-        setMedicines(filteredMedicines);
+        const { data } = await getAllProduct();
+
+        // No allowedTypes filter — just use category field
+        const filteredProducts =
+          data?.filter((med: TProductResponse) => med.category).slice(0, 8) ||
+          [];
+
+        setProducts(filteredProducts);
       } catch (err) {
-        setError("Failed to load medicines");
-        console.error("Error fetching medicines:", err);
+        setError("Failed to load products");
+        console.error("Error fetching products:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMedicines();
+    fetchProducts();
   }, []);
 
   const settings = {
@@ -220,7 +201,7 @@ export default function BestSellingMedicines() {
     return (
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Best Selling Medicines
+          Best Selling Products
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(3)].map((_, index) => (
@@ -238,21 +219,21 @@ export default function BestSellingMedicines() {
     return (
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Best Selling Medicines
+          Best Selling products
         </h2>
         <div className="text-center text-red-500 text-lg">{error}</div>
       </section>
     );
   }
 
-  if (!medicines || medicines.length === 0) {
+  if (!products || products.length === 0) {
     return (
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Best Selling Medicines
+          Best Selling Products
         </h2>
         <div className="text-center text-gray-500 text-lg">
-          No medicines available at the moment.
+          No products available at the moment.
         </div>
       </section>
     );
@@ -261,20 +242,20 @@ export default function BestSellingMedicines() {
   return (
     <section className="py-16 px-6 md:px-20">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-        Best Selling Medicines
+        Best Selling Products
       </h2>
 
       <div className="relative">
         <Slider ref={sliderRef} {...settings}>
-          {medicines.map((medicine, index) => (
+          {products.map((product, index) => (
             <motion.div
-              key={medicine._id}
+              key={product._id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <MedicineCard medicine={medicine} />
+              <ProductCard product={product} />
             </motion.div>
           ))}
         </Slider>
@@ -305,10 +286,10 @@ export default function BestSellingMedicines() {
         className="text-center mt-12"
       >
         <Link
-          href="/medicines"
+          href="/shop"
           className="bg-black hover:from-blue-900 text-white font-semibold px-10 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 inline-block"
         >
-          Browse All Medicines
+          Browse All products
         </Link>
       </motion.div>
     </section>

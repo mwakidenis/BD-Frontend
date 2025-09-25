@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { ColumnDef } from "@tanstack/react-table";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -15,6 +14,8 @@ import { updateOrderStatus } from "@/services/order";
 import { toast } from "sonner";
 import { IOrderResponse } from "@/types/order";
 import { MMTable } from "../../DashboardComponent/SoptokBdTable/SoptokBDTable";
+import { RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ManageOrdersProps {
   data: IOrderResponse[];
@@ -40,51 +41,17 @@ const AdminManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
   const columns: ColumnDef<IOrderResponse>[] = [
     {
       accessorKey: "name",
-      header: "Customer info",
+      header: "Customer",
       cell: ({ row }) => (
         <div>
-          <p className="px-1">{row.original.name}</p>
-          <p className="bg-gray-200 dark:bg-gray-700 text-sm rounded px-1">
+          <p className="font-medium">{row.original.name}</p>
+          <p className="bg-gray-200 dark:bg-gray-700 text-xs rounded px-1 mt-1 w-fit">
             {row.original.email}
           </p>
         </div>
       ),
     },
-    // {
-    //   accessorKey: "prescription",
-    //   header: "Prescription",
-    //   cell: ({ row }) =>
-    //     row.original.prescription ? (
-    //       <div className="w-20 h-20 overflow-hidden rounded-md border dark:border-gray-600">
-    //         <HoverPrescription
-    //           prescription={row.original.prescription}
-    //           products={row.original.products}
-    //         />
-    //       </div>
-    //     ) : (
-    //       <p className="text-center">N/A</p>
-    //     ),
-    // },
-    {
-      accessorKey: "prescriptionReviewStatus",
-      header: "Review Status",
-      cell: ({ row }) => {
-        const status = row.original.prescriptionReviewStatus;
-        const colorClasses = {
-          ok: "bg-green-100 text-green-600 border-green-300 dark:bg-green-800 dark:text-green-100 dark:border-green-600",
-          cancelled:
-            "bg-red-100 text-red-600 border-red-300 dark:bg-red-800 dark:text-red-100 dark:border-red-600",
-          pending:
-            "bg-yellow-100 text-yellow-600 border-yellow-300 dark:bg-yellow-800 dark:text-yellow-100 dark:border-yellow-600",
-        };
 
-        return row.original.prescription ? (
-          <Badge className={colorClasses[status]}>{status.toUpperCase()}</Badge>
-        ) : (
-          <p className="text-center">N/A</p>
-        );
-      },
-    },
     {
       accessorKey: "orderStatus",
       header: "Order Status",
@@ -95,14 +62,14 @@ const AdminManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
             handleOrderStatusChange(row.original._id, value)
           }
         >
-          <SelectTrigger className="w-[130px]">
+          <SelectTrigger className="w-[140px] text-xs">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="shipped">Shipped</SelectItem>
-            <SelectItem value="delivered">Delivered</SelectItem>
-            <SelectItem value="cancelled">Cancelled</SelectItem>
+            <SelectItem value="pending"> Pending</SelectItem>
+            <SelectItem value="shipped"> Shipped</SelectItem>
+            <SelectItem value="delivered"> Delivered</SelectItem>
+            <SelectItem value="cancelled"> Cancelled</SelectItem>
           </SelectContent>
         </Select>
       ),
@@ -112,28 +79,36 @@ const AdminManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
       header: "Payment",
       cell: ({ row }) =>
         row.original.paymentStatus ? (
-          <Badge variant="default">Paid</Badge>
+          <Badge className="bg-emerald-100 text-emerald-700 border border-emerald-300 dark:bg-emerald-800 dark:text-emerald-100 dark:border-emerald-600">
+            Paid
+          </Badge>
         ) : (
-          <Badge variant="destructive">Unpaid</Badge>
+          <Badge className="bg-rose-100 text-rose-700 border border-rose-300 dark:bg-rose-800 dark:text-rose-100 dark:border-rose-600">
+            Unpaid
+          </Badge>
         ),
     },
     {
       accessorKey: "shippingCost",
-      header: "Shipping Cost",
+      header: "Shipping",
       cell: ({ row }) => <span>৳{row.original.shippingCost}</span>,
     },
     {
       accessorKey: "totalPrice",
-      header: "Total Price",
-      cell: ({ row }) => <span>৳{row.original.totalPrice}</span>,
+      header: "Total",
+      cell: ({ row }) => (
+        <span className="font-semibold text-slate-700 dark:text-slate-200">
+          ৳{row.original.totalPrice}
+        </span>
+      ),
     },
     {
       accessorKey: "shippingInfo",
-      header: "Shipping Address",
+      header: "Shipping Info",
       cell: ({ row }) => (
-        <div>
+        <div className="text-sm">
           <p>{row.original.shippingInfo.shippingAddress}</p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             {row.original.shippingInfo.shippingCity}
           </p>
         </div>
@@ -143,17 +118,15 @@ const AdminManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
       accessorKey: "products",
       header: "Products",
       cell: ({ row }) => (
-        <div className="space-y-1">
+        <div className="flex flex-wrap gap-2">
           {row.original.products.map((product, index) => (
-            <div
+            <span
               key={index}
-              className="text-sm p-1 rounded bg-muted dark:bg-gray-800 border border-border dark:border-gray-600"
+              className="px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs border border-slate-300 dark:border-slate-600"
             >
-              <p>
-                <span className="font-medium">{product.name}</span> — Qty:{" "}
-                {product.quantity}, ৳{product.price}
-              </p>
-            </div>
+              {product.name} —{" "}
+              <span className="font-medium">Qty {product.quantity}</span>
+            </span>
           ))}
         </div>
       ),
@@ -161,10 +134,24 @@ const AdminManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
   ];
 
   return (
-    <div className="">
-      <h2 className="text-2xl font-semibold mb-4">Manage Orders</h2>
-      <div className="w-full flex items-center justify-between">
-        <MMTable data={data} columns={columns} />
+    <div className="w-full">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white">
+            Manage Orders
+          </h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {data.length} orders found
+          </p>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm bg-white dark:bg-slate-900 p-4">
+        <div className="overflow-x-auto">
+          <MMTable data={data} columns={columns} />
+        </div>
       </div>
     </div>
   );

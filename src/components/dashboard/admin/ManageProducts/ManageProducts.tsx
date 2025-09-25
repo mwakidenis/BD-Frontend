@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { deleteMedicine } from "@/services/product";
+import { deleteProduct } from "@/services/product";
 import { IMeta } from "@/types/meta";
-import { TMedicineResponse } from "@/types/product";
+import { TProductResponse } from "@/types/product";
 import { ColumnDef } from "@tanstack/react-table";
 import { Pen, Trash } from "lucide-react";
 import Image from "next/image";
@@ -20,7 +20,7 @@ const ManageProduct = ({
   data,
   meta,
 }: {
-  data: TMedicineResponse[];
+  data: TProductResponse[];
   meta: IMeta;
 }) => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -32,7 +32,7 @@ const ManageProduct = ({
     desc: false,
   });
 
-  const handleDelete = (data: TMedicineResponse) => {
+  const handleDelete = (data: TProductResponse) => {
     setSelectedId(data?._id);
     setSelectedItem(data?.name);
     setModalOpen(true);
@@ -41,7 +41,7 @@ const ManageProduct = ({
   const handleDeleteConfirm = async (id: string) => {
     try {
       if (id) {
-        const res = await deleteMedicine(id);
+        const res = await deleteProduct(id);
         if (res.success) {
           toast.success(res.message);
           setModalOpen(false);
@@ -66,14 +66,14 @@ const ManageProduct = ({
   };
 
   const sortedData = [...data].sort((a, b) => {
-    const aValue = a[sorting.key as keyof TMedicineResponse];
-    const bValue = b[sorting.key as keyof TMedicineResponse];
+    const aValue = a[sorting.key as keyof TProductResponse];
+    const bValue = b[sorting.key as keyof TProductResponse];
     if (aValue < bValue) return sorting.desc ? 1 : -1;
     if (aValue > bValue) return sorting.desc ? -1 : 1;
     return 0;
   });
 
-  const columns: ColumnDef<TMedicineResponse>[] = [
+  const columns: ColumnDef<TProductResponse>[] = [
     {
       accessorKey: "name",
       header: "Name",
@@ -94,8 +94,8 @@ const ManageProduct = ({
       ),
     },
     {
-      accessorKey: "type",
-      header: "Type",
+      accessorKey: "category",
+      header: "Category",
     },
     {
       accessorKey: "manufacturer",
@@ -138,10 +138,6 @@ const ManageProduct = ({
       ),
     },
     {
-      accessorKey: "expireDate",
-      header: "Expire",
-    },
-    {
       accessorKey: "delete",
       header: () => <div>Delete</div>,
       cell: ({ row }) => (
@@ -153,23 +149,6 @@ const ManageProduct = ({
           >
             <Trash className="w-5 h-5" />
           </button>
-        </div>
-      ),
-    },
-    {
-      accessorKey: "requiredPrescription",
-      header: () => <div>Kupon Code</div>,
-      cell: ({ row }) => (
-        <div className="text-center flex justify-center items-center">
-          {row.original.requiredPrescription ? (
-            <p className="text-green-500 border bg-green-100 w-14 text-center px-1 rounded">
-              True
-            </p>
-          ) : (
-            <p className="text-red-500 border bg-red-100 w-14 text-center px-1 rounded">
-              False
-            </p>
-          )}
         </div>
       ),
     },

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { IMedicine, IMedicineWithId } from "@/types/product";
+import { IProduct, IProductWithId } from "@/types/product";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
-export const createMedicine = async (medicineData: IMedicine) => {
+// createProduct
+export const createProduct = async (productData: IProduct) => {
   try {
     const res = await fetch(`${process.env.BASE_API}/product/create-product`, {
       method: "POST",
@@ -13,30 +14,31 @@ export const createMedicine = async (medicineData: IMedicine) => {
         Authorization: (await cookies()).get("accessToken")!.value,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(medicineData),
+      body: JSON.stringify(productData),
     });
-    revalidateTag("MEDICINE");
+    revalidateTag("PRODUCT");
     return res.json();
   } catch (error: any) {
     return Error(error);
   }
 };
 
-export const updateMedicine = async (medicineData: IMedicineWithId) => {
+// updateProduct
+export const updateProduct = async (productData: IProductWithId) => {
   try {
     const res = await fetch(
-      `${process.env.BASE_API}/product/${medicineData._id}`,
+      `${process.env.BASE_API}/product/${productData._id}`,
       {
         method: "PATCH",
         headers: {
           Authorization: (await cookies()).get("accessToken")!.value,
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(medicineData),
+        body: JSON.stringify(productData),
       }
     );
 
-    revalidateTag("MEDICINE");
+    revalidateTag("PRODUCT");
 
     return res.json();
   } catch (error: any) {
@@ -44,7 +46,8 @@ export const updateMedicine = async (medicineData: IMedicineWithId) => {
   }
 };
 
-export const deleteMedicine = async (id: string) => {
+// deleteProduct
+export const deleteProduct = async (id: string) => {
   try {
     const res = await fetch(`${process.env.BASE_API}/product/${id}`, {
       method: "DELETE",
@@ -54,7 +57,7 @@ export const deleteMedicine = async (id: string) => {
       },
     });
 
-    revalidateTag("MEDICINE");
+    revalidateTag("PRODUCT");
 
     return res.json();
   } catch (error: any) {
@@ -62,7 +65,8 @@ export const deleteMedicine = async (id: string) => {
   }
 };
 
-export const getAllMedicine = async (params?: Record<string, string>) => {
+// getAllProduct
+export const getAllProduct = async (params?: Record<string, string>) => {
   try {
     const query = new URLSearchParams(params).toString();
 
@@ -70,7 +74,7 @@ export const getAllMedicine = async (params?: Record<string, string>) => {
       `${process.env.BASE_API}/product${query ? `?${query}` : ""}`,
       {
         next: {
-          tags: ["MEDICINE"],
+          tags: ["PRODUCT"],
         },
       }
     );
@@ -81,7 +85,8 @@ export const getAllMedicine = async (params?: Record<string, string>) => {
   }
 };
 
-export const getHomePageMedicines = async (params?: Record<string, string>) => {
+// getHomePageProducts
+export const getHomePageProducts = async (params?: Record<string, string>) => {
   try {
     const res = await fetch(
       `${process.env.BASE_API}/product`,
@@ -90,7 +95,7 @@ export const getHomePageMedicines = async (params?: Record<string, string>) => {
         cache: "force-cache",
         next: {
           revalidate: 30,
-          tags: ["MEDICINE"],
+          tags: ["PRODUCT"],
         },
       }
     );
@@ -101,10 +106,11 @@ export const getHomePageMedicines = async (params?: Record<string, string>) => {
   }
 };
 
-export const getSingleMedicine = async (medicineId: string) => {
+// getSingleProduct
+export const getSingleProduct = async (medicineId: string) => {
   try {
     const res = await fetch(`${process.env.BASE_API}/product/${medicineId}`, {
-      next: { tags: ["MEDICINE"] },
+      next: { tags: ["PRODUCT"] },
     });
 
     const data = await res.json();
@@ -115,6 +121,7 @@ export const getSingleMedicine = async (medicineId: string) => {
   }
 };
 
+// imageToLink
 export const imageToLink = async (image: FormData) => {
   try {
     const res = await fetch(

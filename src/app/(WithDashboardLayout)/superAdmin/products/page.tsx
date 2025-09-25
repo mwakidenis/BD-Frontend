@@ -1,10 +1,10 @@
 export const dynamic = "force-dynamic";
 
-import ManageProduct from "@/components/dashboard/admin/ManageProducts/ManageProducts";
-import { getAllMedicine } from "@/services/product";
+import ManageProductBySuperAdmin from "@/components/dashboard/superAdmin/ManageProducts/ManageProductsBySuperAdmin";
+import { getAllProduct } from "@/services/product";
 import React from "react";
 
-const MedicinesPage = async ({
+const ProductsPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ searchItem: string }>;
@@ -14,13 +14,13 @@ const MedicinesPage = async ({
   // Merge searchParams with a default 'limit' if not present
   const searchParamsWithLimit = { ...resolvedSearchParams };
 
-  const { data: medicines, meta } = await getAllMedicine(searchParamsWithLimit);
+  const { data: products, meta } = await getAllProduct(searchParamsWithLimit);
 
   return (
     <div className=" w-full">
-      <ManageProduct data={medicines} meta={meta} />
+      <ManageProductBySuperAdmin data={products} meta={meta} />
     </div>
   );
 };
 
-export default MedicinesPage;
+export default ProductsPage;

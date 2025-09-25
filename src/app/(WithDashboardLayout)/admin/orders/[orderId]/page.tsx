@@ -8,7 +8,7 @@ const SpecificOrderPage = async ({
 }) => {
   const { data: order } = await getSpecificOrder((await params).orderId);
 
-  console.log(order.products[0].productId.expiryDate);
+  // console.log(order.products[0].productId.expiryDate);
 
   return (
     <div>

@@ -3,15 +3,15 @@
 import React, { useState } from "react";
 
 import { usePathname } from "next/navigation";
-import { TMedicineResponse } from "@/types/product";
+import { TProductResponse } from "@/types/product";
 import { IMeta } from "@/types/meta";
-import MedicineCard from "./ProductCard";
+import ProductCard from "./ProductCard";
 
 const ShopAllProducts = ({
-  medicines,
+  products,
   meta,
 }: {
-  medicines: TMedicineResponse[];
+  products: TProductResponse[];
   meta: IMeta;
 }) => {
   const pathname = usePathname();
@@ -21,8 +21,8 @@ const ShopAllProducts = ({
       <div
         className={`grid grid-cols-1 xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-2 md:gap-4`}
       >
-        {medicines.map((medicine: TMedicineResponse, index) => (
-          <MedicineCard key={index} medicine={medicine} />
+        {products.map((product: TProductResponse, index) => (
+          <ProductCard key={index} product={product} />
         ))}
       </div>
     </div>

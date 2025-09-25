@@ -18,25 +18,23 @@ import { addItemToCart } from "@/redux/features/cartSlice";
 import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
 import { useState } from "react";
-import { TMedicineResponse } from "@/types/product";
+import { TProductResponse } from "@/types/product";
 
-export default function MedicineCard({
-  medicine,
+export default function ProductCard({
+  product,
 }: {
-  medicine: TMedicineResponse;
+  product: TProductResponse;
 }) {
   const {
     name,
     description,
-    type,
-    requiredPrescription,
+    category,
     price,
     discount,
-    expireDate,
     quantity,
     imageUrl,
     _id,
-  } = medicine;
+  } = product;
 
   const dispatch = useAppDispatch();
 
@@ -47,10 +45,9 @@ export default function MedicineCard({
         name,
         quantity: 1,
         price,
-        image: medicine.imageUrl[0],
+        image: product.imageUrl[0],
         description,
-        type,
-        prescription: requiredPrescription,
+        category,
       })
     );
 
@@ -89,7 +86,7 @@ export default function MedicineCard({
         {/* Image Container with Overlay Effects */}
         <div className="relative overflow-hidden">
           <Image
-            src={imageUrl[0] || "/placeholder-medicine.jpg"}
+            src={imageUrl[0] || "/placeholder-product.jpg"}
             alt={name}
             width={400}
             height={250}
@@ -112,16 +109,6 @@ export default function MedicineCard({
             </motion.div>
           )}
 
-          {/* Prescription Required Badge */}
-          {requiredPrescription && (
-            <div className="absolute top-3 right-3 z-10">
-              <Badge className="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 text-xs flex items-center gap-1">
-                <Stethoscope size={12} />
-                Rx Required
-              </Badge>
-            </div>
-          )}
-
           {/* Stock Status Overlay */}
           {isOutOfStock && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-20">
@@ -142,9 +129,9 @@ export default function MedicineCard({
 
               {/* Stock Badge */}
               <div className="flex flex-col items-end gap-1">
-                {/* Medicine Type */}
+                {/* product Type */}
                 <Badge variant="outline" className="text-xs">
-                  {type}
+                  {category}
                 </Badge>
               </div>
             </div>

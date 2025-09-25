@@ -1,13 +1,13 @@
 export const dynamic = "force-dynamic";
 
 import TablePagination from "@/components/dashboard/DashboardComponent/TablePagination/TablePagination";
-import FilterMedicineSidebar from "@/components/shop/FilterProduct";
+import FilterProductSidebar from "@/components/shop/FilterProduct";
 import ShopAllProducts from "@/components/shop/ShopAllProducts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getAllMedicine } from "@/services/product";
+import { getAllProduct } from "@/services/product";
 import React, { Suspense } from "react";
 
-const AllMedicinesPage = async ({
+const AllProductsPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ searchItem: string }>;
@@ -16,14 +16,14 @@ const AllMedicinesPage = async ({
 
   const searchParamsWithLimit = { ...resolvedSearchParams };
 
-  const { data: medicines, meta } = await getAllMedicine(searchParamsWithLimit);
+  const { data: products, meta } = await getAllProduct(searchParamsWithLimit);
 
   return (
     <div className="px-4 md:px-8 py-6 bg-background min-h-screen my-16">
       <div className="flex flex-col md:flex-row gap-8 mt-2">
         {/* Left Sidebar Filter */}
         <div className="md:w-[280px] w-full md:sticky md:top-24 self-start">
-          <FilterMedicineSidebar />
+          <FilterProductSidebar />
         </div>
 
         {/* Product Grid or Fallback */}
@@ -47,8 +47,8 @@ const AllMedicinesPage = async ({
               </div>
             }
           >
-            {medicines?.length ? (
-              <ShopAllProducts medicines={medicines} meta={meta} />
+            {products?.length ? (
+              <ShopAllProducts products={products} meta={meta} />
             ) : (
               <p className="text-center text-3xl text-red-600 my-12">
                 No products found
@@ -61,4 +61,4 @@ const AllMedicinesPage = async ({
   );
 };
 
-export default AllMedicinesPage;
+export default AllProductsPage;

@@ -40,17 +40,13 @@ export const getSingleUser = async (id: string) => {
 
 export const deleteSingleUser = async (userId: string) => {
   try {
-    const res = await fetch(
-      `${process.env.BASE_API}/user/${userId}`,
-
-      {
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-      }
-    );
+    const res = await fetch(`${process.env.BASE_API}/user/${userId}`, {
+      headers: {
+        Authorization: (await cookies()).get("accessToken")!.value,
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    });
     revalidateTag("USER");
 
     const data = await res.json();
@@ -99,6 +95,32 @@ export const updatePassword = async (
           "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedData),
+      }
+    );
+
+    revalidateTag("USER");
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+// Update User Role (only superAdmin can call this)
+export const updateUserRole = async (
+  userId: string,
+  role: "user" | "admin" | "superAdmin"
+) => {
+  try {
+    const res = await fetch(
+      `${process.env.BASE_API}/user/update-role/${userId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: (await cookies()).get("accessToken")!.value,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ role }),
       }
     );
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 
@@ -16,15 +16,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
 import { X } from "lucide-react";
 
-export default function FilterMedicineSidebar() {
+import { getAllProduct } from "@/services/product";
+import { IProduct } from "@/types/product";
+
+export default function FilterProductSidebar() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -32,38 +29,38 @@ export default function FilterMedicineSidebar() {
   const [price, setPrice] = useState<number[]>([0]);
   const [date, setDate] = useState<Date | undefined>();
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedManufacturer, setSelectedManufacturer] = useState<
-    string | undefined
-  >(undefined);
 
-  const manufacturers = [
-    "ABC Pharma",
-    "Beximco Pharmaceuticals Ltd",
-    "ACME Laboratories Ltd",
-    "Ziska Pharmaceuticals Ltd",
-    "MediCore Pharma",
-    "PainRelief Pharma",
-    "DiabetaMed",
-    "WellCare Pharma",
-    "NovaCare Pharma",
-    "Genereal Pharma",
-    "Square Pharma",
-    "Pfizer",
-  ];
+  const [categories, setCategories] = useState<string[]>([]);
+  const [manufacturers, setManufacturers] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [selectedManufacturer, setSelectedManufacturer] = useState<string>();
 
-  const types = [
-    "Syrup",
-    "Tablet",
-    "Capsule",
-    "Injection",
-    "Drops",
-    "Skin Care",
-    "Food",
-    "Baby",
-  ];
+  useEffect(() => {
+    const fetchFilters = async () => {
+      try {
+        const res = await getAllProduct();
+        if (res?.data) {
+          const allProducts: IProduct[] = res.data;
+
+          // ✅ Extract unique categories & manufacturers
+          const uniqueCategories: string[] = Array.from(
+            new Set(allProducts.map((p) => p.category))
+          ).filter(Boolean);
+
+          const uniqueManufacturers: string[] = Array.from(
+            new Set(allProducts.map((p) => p.manufacturer))
+          ).filter(Boolean);
+
+          setCategories(uniqueCategories);
+          setManufacturers(uniqueManufacturers);
+        }
+      } catch (err) {
+        console.error("Error fetching filters:", err);
+      }
+    };
+
+    fetchFilters();
+  }, []);
 
   const handleFilter = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams);
@@ -79,7 +76,7 @@ export default function FilterMedicineSidebar() {
     setPrice([0]);
     setDate(undefined);
     setSearchTerm("");
-    setSelectedType(undefined);
+    setSelectedCategory(undefined);
     setSelectedManufacturer(undefined);
     router.push(`${pathname}`);
   };
@@ -113,50 +110,46 @@ export default function FilterMedicineSidebar() {
         />
       </div>
 
-      {/* Type */}
+      {/* Category Select */}
       <div className="space-y-1">
-        <Label>Type</Label>
+        <Label>Category</Label>
         <Select
-          value={selectedType || "none"}
-          onValueChange={(val) => {
-            const newVal = val === "none" ? undefined : val;
-            setSelectedType(newVal);
-            handleFilter("type", newVal || "");
+          value={selectedCategory}
+          onValueChange={(value) => {
+            setSelectedCategory(value);
+            handleFilter("category", value);
           }}
         >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Type" />
+          <SelectTrigger>
+            <SelectValue placeholder="Select category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="none">Select Type</SelectItem>
-            {types.map((type) => (
-              <SelectItem key={type} value={type}>
-                {type}
+            {categories.map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
       </div>
 
-      {/* Manufacturer */}
+      {/* Manufacturer Select */}
       <div className="space-y-1">
         <Label>Manufacturer</Label>
         <Select
-          value={selectedManufacturer || "none"}
-          onValueChange={(val) => {
-            const newVal = val === "none" ? undefined : val;
-            setSelectedManufacturer(newVal);
-            handleFilter("manufacturer", newVal || "");
+          value={selectedManufacturer}
+          onValueChange={(value) => {
+            setSelectedManufacturer(value);
+            handleFilter("manufacturer", value);
           }}
         >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select Manufacturer" />
+          <SelectTrigger>
+            <SelectValue placeholder="Select manufacturer" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="none">Select Manufacturer</SelectItem>
-            {manufacturers.map((manufacturer) => (
-              <SelectItem key={manufacturer} value={manufacturer}>
-                {manufacturer}
+            {manufacturers.map((man) => (
+              <SelectItem key={man} value={man}>
+                {man}
               </SelectItem>
             ))}
           </SelectContent>
@@ -186,47 +179,6 @@ export default function FilterMedicineSidebar() {
         />
       </div>
 
-      {/* Expiry Date */}
-      <div className="space-y-1">
-        <Label>Expiry Before</Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full justify-start text-left font-normal"
-            >
-              {date ? (
-                format(date, "PPP")
-              ) : (
-                <span className="text-muted-foreground">Pick a date</span>
-              )}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 dark:bg-zinc-900 dark:border-zinc-700">
-            <Calendar
-              mode="single"
-              selected={date ?? undefined}
-              onSelect={(selectedDate) => {
-                setDate(selectedDate);
-                if (selectedDate) {
-                  const increasedDate = new Date(selectedDate);
-                  increasedDate.setDate(increasedDate.getDate() + 1);
-                  handleFilter(
-                    "expireDate",
-                    increasedDate.toISOString().split("T")[0]
-                  );
-                } else {
-                  handleFilter("expireDate", "");
-                }
-              }}
-              defaultMonth={new Date()}
-              key={date ? date.toISOString() : "no-date"}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-
       {/* Stockout */}
       <div className="space-y-1">
         <Label>Stockout</Label>
@@ -238,7 +190,7 @@ export default function FilterMedicineSidebar() {
             }
           />
           <Label htmlFor="stockout" className="text-sm">
-            Stockout medicines
+            Stockout Products
           </Label>
         </div>
       </div>

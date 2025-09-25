@@ -16,13 +16,7 @@ import { toast } from "sonner";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,19 +30,18 @@ import {
 import { useUser } from "@/context/UserContext";
 
 import { createReview } from "@/services/review";
-import { TMedicineResponse } from "@/types/product";
+import { TProductResponse } from "@/types/product";
 import { TReview, TReviewResponse } from "@/types/review";
-import MedicineCard from "../shop/ProductCard";
-import Input2 from "../ui/Input2";
+import ProductCard from "../shop/ProductCard";
 
-export default function MedicineDetail({
-  medicine,
+export default function ProductDetail({
+  product,
   reviews,
-  relatedMedicines,
+  relatedProducts,
 }: {
-  medicine: TMedicineResponse;
+  product: TProductResponse;
   reviews: TReviewResponse[];
-  relatedMedicines: TMedicineResponse[];
+  relatedProducts: TProductResponse[];
 }) {
   const router = useRouter();
   const { user } = useUser();
@@ -58,9 +51,9 @@ export default function MedicineDetail({
     (review) => review.userId && review.userId._id === user?.id
   );
 
-  const [selectedImage, setSelectedImage] = useState(medicine.imageUrl[0]);
+  const [selectedImage, setSelectedImage] = useState(product.imageUrl[0]);
   const { cartedProductQuantity } = useAppSelector((state) =>
-    specificProductQuantitySelector(state, { id: medicine._id })
+    specificProductQuantitySelector(state, { id: product._id })
   );
 
   const [title, setTitle] = useState("");
@@ -84,7 +77,7 @@ export default function MedicineDetail({
 
       const reviewData: TReview = {
         userId: user.id,
-        productId: medicine._id,
+        productId: product._id,
         title,
         description,
         rating,
@@ -107,14 +100,13 @@ export default function MedicineDetail({
   const handleAddToCart = () => {
     dispatch(
       addItemToCart({
-        id: medicine._id,
-        name: medicine.name,
+        id: product._id,
+        name: product.name,
         quantity: 1,
-        price: medicine.price,
-        image: medicine.imageUrl[0],
-        description: medicine.description,
-        type: medicine.type,
-        prescription: medicine.requiredPrescription,
+        price: product.price,
+        image: product.imageUrl[0],
+        description: product.description,
+        category: product.category,
       })
     );
     toast.success("Product added to cart!", { duration: 1000 });
@@ -129,8 +121,8 @@ export default function MedicineDetail({
         ).toFixed(1)
       : "0";
 
-  const discountedPrice = medicine.price * (1 - medicine.discount / 100);
-  const savings = medicine.price - discountedPrice;
+  const discountedPrice = product.price * (1 - product.discount / 100);
+  const savings = product.price - discountedPrice;
 
   return (
     <div className="min-h-screen dark:from-slate-900 dark:to-blue-900 my-10">
@@ -158,20 +150,20 @@ export default function MedicineDetail({
                     width={400}
                     height={400}
                     src={selectedImage}
-                    alt={medicine.name}
+                    alt={product.name}
                     className="w-80 h-80 object-contain "
                   />
                 </motion.div>
               </AnimatePresence>
-              {medicine.discount > 0 && (
+              {product.discount > 0 && (
                 <Badge className="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 text-sm font-bold">
-                  -{medicine.discount}%
+                  -{product.discount}%
                 </Badge>
               )}
             </div>
 
             <div className="flex gap-3 justify-center">
-              {medicine.imageUrl.map((image, index) => (
+              {product.imageUrl.map((image, index) => (
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.05 }}
@@ -226,15 +218,15 @@ export default function MedicineDetail({
                 variant="secondary"
                 className="mb-3 bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
               >
-                {medicine.type}
+                {product.category}
               </Badge>
               <h1 className="text-4xl font-bold text-slate-900 dark:text-white leading-tight">
-                {medicine.name}
+                {product.name}
               </h1>
               <p className="text-lg text-slate-600 dark:text-slate-300 mt-2">
                 by{" "}
                 <span className="font-semibold text-slate-800 dark:text-slate-200">
-                  {medicine.manufacturer}
+                  {product.manufacturer}
                 </span>
               </p>
             </div>
@@ -245,13 +237,13 @@ export default function MedicineDetail({
                 <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   ৳{discountedPrice.toFixed(2)}
                 </span>
-                {medicine.discount > 0 && (
+                {product.discount > 0 && (
                   <span className="text-lg line-through text-slate-500">
-                    ৳{medicine.price.toFixed(2)}
+                    ৳{product.price.toFixed(2)}
                   </span>
                 )}
               </div>
-              {medicine.discount > 0 && (
+              {product.discount > 0 && (
                 <p className="text-sm text-green-600 dark:text-green-400 font-medium">
                   You save ৳{savings.toFixed(2)}
                 </p>
@@ -266,12 +258,12 @@ export default function MedicineDetail({
                 </span>
                 <Badge
                   className={
-                    medicine.inStock
+                    product.inStock
                       ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
                       : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                   }
                 >
-                  {medicine.inStock ? "In Stock" : "Out of Stock"}
+                  {product.inStock ? "In Stock" : "Out of Stock"}
                 </Badge>
               </div>
               <div className="flex items-center justify-between">
@@ -279,34 +271,18 @@ export default function MedicineDetail({
                   Available Quantity:
                 </span>
                 <span className="text-sm font-semibold text-slate-900 dark:text-white">
-                  {medicine.quantity} units
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Expires on:
-                </span>
-                <span className="text-sm font-semibold text-slate-900 dark:text-white">
-                  {medicine.expireDate}
+                  {product.quantity} units
                 </span>
               </div>
             </div>
 
-            {medicine.requiredPrescription && (
-              <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-                <p className="text-red-700 dark:text-red-300 font-medium text-sm flex items-center gap-2">
-                  <Shield className="w-4 h-4" />
-                  Prescription Required - Please consult your doctor
-                </p>
-              </div>
-            )}
             {/* Description */}
             <div className="bg-white dark:bg-slate-800  p-6 border border-slate-200 dark:border-slate-700">
               <h3 className="font-semibold text-slate-900 dark:text-white mb-3">
                 Description
               </h3>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                {medicine.description}
+                {product.description}
               </p>
             </div>
 
@@ -315,21 +291,21 @@ export default function MedicineDetail({
               <Button
                 onClick={handleAddToCart}
                 disabled={
-                  !medicine.inStock ||
+                  !product.inStock ||
                   user?.role === "admin" ||
-                  cartedProductQuantity >= medicine.quantity
+                  cartedProductQuantity >= product.quantity
                 }
                 className="w-full "
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />
-                {medicine.inStock ? "Add to Cart" : "Out of Stock"}
+                {product.inStock ? "Add to Cart" : "Out of Stock"}
               </Button>
             </div>
           </motion.div>
         </div>
 
         {/* Related Products */}
-        {Array.isArray(relatedMedicines) && relatedMedicines.length > 0 && (
+        {Array.isArray(relatedProducts) && relatedProducts.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -342,11 +318,11 @@ export default function MedicineDetail({
                 Related Products
               </h2>
               <p className="text-slate-600 dark:text-slate-400">
-                Discover similar medicines that might interest you
+                Discover similar products that might interest you
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              {relatedMedicines.map((med, index) => (
+              {relatedProducts.map((med, index) => (
                 <motion.div
                   key={med._id}
                   initial={{ opacity: 0, y: 30 }}
@@ -354,7 +330,7 @@ export default function MedicineDetail({
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
-                  <MedicineCard medicine={med} />
+                  <ProductCard product={med} />
                 </motion.div>
               ))}
             </div>
@@ -484,7 +460,7 @@ export default function MedicineDetail({
                 <p className="text-slate-600 dark:text-slate-400">
                   Help others by reviewing{" "}
                   <span className="font-semibold text-blue-600 dark:text-blue-400">
-                    {medicine.name}
+                    {product.name}
                   </span>
                 </p>
               </div>
@@ -517,7 +493,7 @@ export default function MedicineDetail({
                     id="description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Share your detailed experience with this medicine..."
+                    placeholder="Share your detailed experience with this product..."
                     rows={4}
                     className="mt-2 border-2 border-slate-200 rounded-none dark:border-slate-700 focus:border-gray-500 dark:focus:border-gray-400 resize-none"
                   />

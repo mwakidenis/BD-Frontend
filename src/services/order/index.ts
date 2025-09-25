@@ -3,25 +3,27 @@
 import { IOrderResponse } from "@/types/order";
 import { cookies } from "next/headers";
 
-export const createOrderWithPrescription = async (orderInfo: any) => {
-  const res = await fetch(
-    `${process.env.BASE_API}/order/create-order-prescription`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: (await cookies()).get("accessToken")!.value,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(orderInfo),
-    }
-  );
+// createOrderWithPrescription
+// export const createOrderWithPrescription = async (orderInfo: any) => {
+//   const res = await fetch(
+//     `${process.env.BASE_API}/order/create-order-prescription`,
+//     {
+//       method: "POST",
+//       headers: {
+//         Authorization: (await cookies()).get("accessToken")!.value,
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(orderInfo),
+//     }
+//   );
 
-  const result = res.json();
+//   const result = res.json();
 
-  return result;
-};
+//   return result;
+// };
 
-export const createOrderWithOutPrescription = async (orderInfo: any) => {
+// createOrderWithOutPrescription
+export const createOrder = async (orderInfo: any) => {
   try {
     const res = await fetch(
       `${process.env.BASE_API}/order/create-order-payment`,
@@ -43,6 +45,7 @@ export const createOrderWithOutPrescription = async (orderInfo: any) => {
   }
 };
 
+// updateOrderStatus
 export const updateOrderStatus = async (orderId: string, newStatus: string) => {
   try {
     const res = await fetch(`${process.env.BASE_API}/order/${orderId}`, {
@@ -63,32 +66,7 @@ export const updateOrderStatus = async (orderId: string, newStatus: string) => {
   }
 };
 
-export const updatePrescriptionReviewStatus = async (
-  orderId: string,
-  newStatus: string
-) => {
-  try {
-    const res = await fetch(
-      `${process.env.BASE_API}/order/prescription/${orderId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: (await cookies()).get("accessToken")!.value,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prescriptionReviewStatus: newStatus }),
-        next: {
-          tags: ["ORDER"],
-        },
-      }
-    );
-
-    return await res.json();
-  } catch (error: any) {
-    throw new Error(error?.message || "Something went wrong");
-  }
-};
-
+// getAllOrder
 export const getAllOrder = async () => {
   try {
     const res = await fetch(`${process.env.BASE_API}/order`, {
@@ -106,6 +84,7 @@ export const getAllOrder = async () => {
   }
 };
 
+// getUserOrders
 export const getUserOrders = async (id: string) => {
   try {
     const res = await fetch(`${process.env.BASE_API}/order/user-order/${id}`, {
@@ -123,6 +102,7 @@ export const getUserOrders = async (id: string) => {
   }
 };
 
+// getSpecificOrder
 export const getSpecificOrder = async (id: string) => {
   try {
     const res = await fetch(`${process.env.BASE_API}/order/${id}`, {
@@ -140,6 +120,7 @@ export const getSpecificOrder = async (id: string) => {
   }
 };
 
+// paymentPrescriptionOrder
 export const paymentPrescriptionOrder = async (paymentInfo: IOrderResponse) => {
   try {
     const res = await fetch(

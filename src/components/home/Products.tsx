@@ -4,35 +4,32 @@ import { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { getHomePageMedicines } from "@/services/product";
-import { TMedicineResponse } from "@/types/product";
+import { getHomePageProducts } from "@/services/product";
+import { TProductResponse } from "@/types/product";
 
 // --- Types ---
-type MedicineCardProps = {
-  medicine: TMedicineResponse;
+type ProductCardProps = {
+  product: TProductResponse;
 };
 
-// --- Medicine Card ---
-const MedicineCard = ({ medicine }: MedicineCardProps) => {
+// --- Product Card ---
+const ProductCard = ({ product }: ProductCardProps) => {
   const [hover, setHover] = useState(false);
 
   // Calculate discounted price
   const discountedPrice =
-    medicine.discount > 0
-      ? medicine.price - (medicine.price * medicine.discount) / 100
-      : medicine.price;
+    product.discount > 0
+      ? product.price - (product.price * product.discount) / 100
+      : product.price;
 
-  // Check if medicine is expired
-  const isExpired = new Date(medicine.expireDate) < new Date();
-
-  // Check stock status based on inStock boolean and quantity
+  // Stock status (without expireDate check)
   const stockStatus =
-    !medicine.inStock || medicine.quantity === 0
+    !product.inStock || product.quantity === 0
       ? "Out of Stock"
-      : medicine.quantity <= 5
+      : product.quantity <= 5
       ? "Limited Stock"
       : "Available";
-  const isOutOfStock = !medicine.inStock || medicine.quantity === 0;
+  const isOutOfStock = !product.inStock || product.quantity === 0;
 
   return (
     <div
@@ -40,43 +37,36 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {/* Medicine Image */}
+      {/* Product Image */}
       <div
         className={`h-[90%] relative mx-auto duration-500 transform ${
           hover ? "scale-105" : ""
-        } ${isExpired || isOutOfStock ? "grayscale" : ""}`}
+        } ${isOutOfStock ? "grayscale" : ""}`}
         style={{
-          backgroundImage: `url(${medicine.imageUrl[0] || ""})`,
+          backgroundImage: `url(${product.imageUrl[0] || ""})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           width: "80%",
         }}
       />
 
-      {/* Expired/Out of Stock Overlay */}
-      {(isExpired || isOutOfStock) && (
+      {/* Out of Stock Overlay */}
+      {isOutOfStock && (
         <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 text-xs font-semibold  z-20">
-          {isExpired ? "EXPIRED" : "OUT OF STOCK"}
-        </div>
-      )}
-
-      {/* Prescription Required Badge */}
-      {medicine.requiredPrescription && (
-        <div className="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-xs font-semibold  z-20">
-          Rx REQUIRED
+          OUT OF STOCK
         </div>
       )}
 
       {/* Discount Badge */}
-      {medicine.discount > 0 && !isExpired && !isOutOfStock && (
+      {product.discount > 0 && !isOutOfStock && (
         <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 text-xs font-semibold  z-20">
-          {medicine.discount}% OFF
+          {product.discount}% OFF
         </div>
       )}
 
-      {/* Medicine Name */}
+      {/* Product Name */}
       <div className="h-[50px] bg-neutral-200 w-full font-medium py-2 text-center">
-        {medicine.name}
+        {product.name}
       </div>
 
       {/* Hover Overlay */}
@@ -85,45 +75,45 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           hover ? "backdrop-blur-sm bg-black/20" : ""
         }`}
       >
-        {/* Medicine Info */}
+        {/* Product Info */}
         <div
           className={`text-center text-white bg-black/60 px-4 py-2 transition-opacity duration-300 ${
             hover ? "opacity-100" : "opacity-0"
           }`}
         >
-          <p className="text-sm font-semibold mb-1">{medicine.type}</p>
+          <p className="text-sm font-semibold mb-1">{product.category}</p>
           <div className="text-lg font-bold mb-1">
-            {medicine.discount > 0 ? (
+            {product.discount > 0 ? (
               <>
                 <span className="line-through text-gray-300 text-sm mr-2">
-                  ৳ {medicine.price}
+                  ৳ {product.price}
                 </span>
                 <span>৳ {discountedPrice.toFixed(2)}</span>
               </>
             ) : (
-              <span>৳ {medicine.price}</span>
+              <span>৳ {product.price}</span>
             )}
           </div>
           <p className="text-sm">
-            Stock: {medicine.quantity}{" "}
+            Stock: {product.quantity}{" "}
             <span
               className={
-                medicine.quantity <= 5 ? "text-orange-300" : "text-green-300"
+                product.quantity <= 5 ? "text-orange-300" : "text-green-300"
               }
             >
               ({stockStatus})
             </span>
           </p>
-          {medicine.description && (
+          {product.description && (
             <p className="text-xs mt-1 opacity-80 line-clamp-2">
-              {medicine.description}
+              {product.description}
             </p>
           )}
         </div>
 
         {/* View Details */}
         <Link
-          href={`/product/${medicine._id}`}
+          href={`/product/${product._id}`}
           className={`w-[80%] border border-white text-white text-center transition-all duration-500 ${
             hover
               ? "h-[40px] text-base"
@@ -135,13 +125,13 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
 
         {/* Add to Cart */}
         <button
-          disabled={isExpired || isOutOfStock}
+          disabled={isOutOfStock}
           className={`w-[80%] border border-white text-white cursor-pointer flex items-center justify-center gap-2 transition-all duration-500 ${
             hover
               ? "h-[40px] text-base"
               : "w-0 h-0 text-[0px] border-none overflow-hidden"
           } hover:bg-white hover:text-black ${
-            isExpired || isOutOfStock
+            isOutOfStock
               ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-white"
               : ""
           }`}
@@ -149,7 +139,7 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
           <ShoppingCart
             className={`${hover ? "w-4 h-4" : "w-0 h-0"} transition-all`}
           />
-          {isExpired || isOutOfStock ? "Unavailable" : "Add To Cart"}
+          {isOutOfStock ? "Unavailable" : "Add To Cart"}
         </button>
       </div>
     </div>
@@ -157,34 +147,34 @@ const MedicineCard = ({ medicine }: MedicineCardProps) => {
 };
 
 // --- Section Component ---
-export default function MedicineSection() {
-  const [medicines, setMedicines] = useState<TMedicineResponse[]>([]);
+export default function ProductSection() {
+  const [products, setProducts] = useState<TProductResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchMedicines = async () => {
+    const fetchProducts = async () => {
       try {
         setLoading(true);
-        const { data: medicines, meta } = await getHomePageMedicines();
+        const { data: products } = await getHomePageProducts();
         // Show only first 6 medicines
-        setMedicines(medicines.slice(0, 6));
+        setProducts(products.slice(0, 6));
       } catch (err) {
-        setError("Failed to load medicines");
-        console.error("Error fetching medicines:", err);
+        setError("Failed to load products");
+        console.error("Error fetching products:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchMedicines();
+    fetchProducts();
   }, []);
 
   if (loading) {
     return (
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Explore Our Medicine Collections
+          Explore Our Products Collections
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {[...Array(6)].map((_, index) => (
@@ -209,14 +199,14 @@ export default function MedicineSection() {
     );
   }
 
-  if (!medicines || medicines.length === 0) {
+  if (!products || products.length === 0) {
     return (
       <section className="py-16 px-6 md:px-20">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-          Explore Our Medicine Collections
+          Explore Our Product Collections
         </h2>
         <div className="text-center text-gray-500 text-lg">
-          No medicines available at the moment.
+          No Products available at the moment.
         </div>
       </section>
     );
@@ -225,12 +215,12 @@ export default function MedicineSection() {
   return (
     <section className="py-16 px-6 md:px-20">
       <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
-        Explore Our Medicine Collections
+        Explore Our Products Collections
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {medicines.map((medicine) => (
-          <MedicineCard key={medicine._id} medicine={medicine} />
+        {products.map((product) => (
+          <ProductCard key={product._id} product={product} />
         ))}
       </div>
 
@@ -246,7 +236,7 @@ export default function MedicineSection() {
           href="/shop"
           className="bg-black text-white font-semibold px-10 py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 inline-block"
         >
-          Browse All Medicines
+          Browse All products
         </Link>
       </motion.div>
     </section>

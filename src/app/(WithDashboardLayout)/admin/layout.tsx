@@ -21,7 +21,7 @@ const items = [
     icon: Home,
   },
   {
-    title: "Admin Dashboard",
+    title: "Dashboard",
     url: "/admin/dashboard",
     icon: ShieldUser,
   },

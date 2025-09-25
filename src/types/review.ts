@@ -1,4 +1,4 @@
-import { TMedicineResponse } from "./product";
+import { TProductResponse } from "./product";
 import { IUserResponse } from "./user";
 
 export type TReview = {
@@ -14,7 +14,7 @@ export type TReviewResponse = {
   title: string;
   description: string;
   userId: IUserResponse;
-  productId: TMedicineResponse;
+  productId: TProductResponse;
   rating: number;
   createdAt: string;
   updatedAt: string;

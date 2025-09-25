@@ -76,7 +76,7 @@ export default function Categories() {
   return (
     <div className="relative py-12 px-6 md:px-20 my-9">
       <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1d1b20] mb-10">
-        Explore Our Categories
+        Demo Categories
       </h2>
 
       <Slider ref={sliderRef} {...settings}>

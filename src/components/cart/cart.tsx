@@ -1,89 +1,48 @@
 "use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { Trash2, Plus, Minus, ImageUp, ShoppingCart } from "lucide-react";
+import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
 import {
   addOrderInfo,
-  addPrescription,
   clearCart,
   decreaseQuanity,
   increaseQuanity,
   orderSelector,
   removeItemFromCart,
-  specificProductQuantitySelector,
 } from "@/redux/features/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { TMedicineResponse } from "@/types/product";
-import { imageToLink } from "@/services/product";
-import ImagePreviewer from "../dashboard/admin/CreateProduct/ImagePreviewer";
-import ImageUploader from "../dashboard/admin/CreateProduct/ImageUploader";
+import { TProductResponse } from "@/types/product";
 
-const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
+const Cart = ({ products }: { products: TProductResponse[] }) => {
   const router = useRouter();
-
   const orderInfo = useAppSelector(orderSelector);
 
-  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
-
-  const [imagePreview, setImagePreview] = useState<string[]>(
-    orderInfo?.prescription ? [orderInfo.prescription] : []
-  );
-
-  const [prescription, setPrescription] = useState<string>(
-    orderInfo?.prescription ? orderInfo.prescription : ""
-  );
-  const [showMessage, setShowMessage] = useState(false);
-
-  useEffect(() => {
-    const uploadImage = async () => {
-      const formData = new FormData();
-      formData.append("image", imageFiles[0]);
-
-      const res = await imageToLink(formData);
-
-      const imgUrl = res?.data?.url;
-
-      if (imgUrl) {
-        setPrescription(imgUrl);
-        dispatch(addPrescription(imgUrl));
-      }
-    };
-
-    if (imageFiles.length > 0) {
-      uploadImage();
-    }
-  }, [imageFiles]);
-
   const [shippingInfo, setShippingInfo] = useState(orderInfo.shippingInfo);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setShippingInfo((prev) => ({ ...prev, [name]: value }));
-    if (shippingInfo) {
-      dispatch(
-        addOrderInfo({
-          shippingInfo,
-        })
-      );
-    }
-  };
 
   const { items: cartItems, totalPrice } = useAppSelector(
     (state: RootState) => state.cart
   );
   const dispatch = useAppDispatch();
 
-  const handleIncreaseQuantity = (id: string) => {
-    const specificMedicine = medicines?.find((medicine) => medicine._id === id);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const updatedInfo = { ...shippingInfo, [name]: value };
+    setShippingInfo(updatedInfo);
+    dispatch(addOrderInfo({ shippingInfo: updatedInfo }));
+  };
 
-    if (!specificMedicine) {
-      toast.error("Medicine not found");
+  const handleIncreaseQuantity = (id: string) => {
+    const specificProduct = products?.find((product) => product._id === id);
+
+    if (!specificProduct) {
+      toast.error("Product not found");
       return;
     }
 
@@ -91,7 +50,7 @@ const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
       (cartItem) => cartItem.id === id
     )?.quantity as number;
 
-    if (cartedProductQuantity >= specificMedicine.quantity) {
+    if (cartedProductQuantity >= specificProduct.quantity) {
       toast.error("Maximum amount carted");
     } else {
       dispatch(increaseQuanity(id));
@@ -116,95 +75,71 @@ const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
     dispatch(clearCart());
   };
 
-  useEffect(() => {
-    if (prescription) {
-      setShowMessage(true);
-      const timer = setTimeout(() => {
-        setShowMessage(false);
-      }, 10000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [prescription]);
-
   const handleSubmit = () => {
     if (cartItems.length > 0) {
-      if (cartItems.some((cart) => cart.prescription) && prescription) {
-        dispatch(
-          addOrderInfo({
-            shippingInfo,
-          })
-        );
-
-        router.push("/user/checkout");
-      } else if (cartItems.some((cart) => cart.prescription) && !prescription) {
-        toast.warning("Image Upload Error");
-      } else {
-        dispatch(
-          addOrderInfo({
-            shippingInfo,
-          })
-        );
-        router.push("/user/checkout");
-      }
+      dispatch(addOrderInfo({ shippingInfo }));
+      router.push("/user/checkout");
     } else {
       toast.warning("No Product in CART");
     }
   };
 
   return (
-    <div className="flex justify-center items-center lg:min-h-screen my-10">
-      {" "}
+    <div className="flex justify-center items-center lg:min-h-screen py-10 px-4">
       {cartItems.length > 0 ? (
-        <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items Section */}
           <div className="lg:col-span-2 space-y-6">
+            <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+              Your Shopping Cart
+            </h2>
+
             {cartItems.map((item) => (
               <Card
                 key={item.id}
-                className="shadow-sm border border-muted bg-card"
+                className="shadow-md border border-muted bg-card hover:shadow-lg transition"
               >
-                <CardContent className="flex flex-col sm:flex-row gap-4 p-4">
+                <CardContent className="flex flex-col sm:flex-row gap-6 p-5">
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full sm:w-28 h-28 object-cover rounded-xl"
+                    className="w-full sm:w-32 h-32 object-cover rounded-xl border"
                   />
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold">{item.name}</h3>
-                    <p className="text-sm text-muted-foreground">{item.type}</p>
-                    <p className="text-sm mt-1">{item.description}</p>
-                    <p className="text-base font-medium mt-2 text-primary">
+                    <h3 className="text-lg font-semibold">
+                      Product Name : {item.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Category : {item.category}
+                    </p>
+                    <p className="text-sm mt-1 line-clamp-2">
+                      {item.description}
+                    </p>
+                    <p className="text-lg font-bold mt-3 text-primary">
                       ৳{item.price.toFixed(2)}
                     </p>
-                    {item.prescription && (
-                      <p className="text-sm mt-3 text-destructive flex items-center gap-2 font-semibold">
-                        PRESCRIPTION <ImageUp size={16} />
-                      </p>
-                    )}
                   </div>
 
                   <div className="flex flex-row sm:flex-col items-center gap-2 sm:gap-3 justify-between sm:justify-start">
                     <Button
                       onClick={() => handleDecreaseQuantity(item.id)}
-                      variant="ghost"
+                      variant="outline"
                       size="icon"
                     >
                       <Minus size={16} />
                     </Button>
-                    <span>{item.quantity}</span>
+                    <span className="font-medium">{item.quantity}</span>
                     <Button
                       onClick={() => handleIncreaseQuantity(item.id)}
-                      variant="ghost"
+                      variant="outline"
                       size="icon"
                     >
                       <Plus size={16} />
                     </Button>
                     <Button
                       onClick={() => handleRemoveItem(item.id)}
-                      variant="ghost"
+                      variant="destructive"
                       size="icon"
-                      className="text-destructive"
                     >
                       <Trash2 size={16} />
                     </Button>
@@ -212,20 +147,35 @@ const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
                 </CardContent>
               </Card>
             ))}
+
+            {/* Clear Cart Button */}
+            <div className="flex justify-end">
+              <Button
+                onClick={handleClearCart}
+                variant="destructive"
+                className="mt-4"
+              >
+                Clear Cart
+              </Button>
+            </div>
           </div>
 
           {/* Order Summary Section */}
-          <Card className="h-fit border border-muted shadow-md bg-card">
-            <CardContent className="p-4 space-y-4">
-              <h2 className="text-lg font-bold">Order Summary</h2>
+          <Card className="h-fit border border-muted shadow-lg bg-card">
+            <CardContent className="p-6 space-y-6">
+              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+                Order Summary
+              </h2>
 
-              <ul className="space-y-1 text-sm">
+              <ul className="space-y-2 text-sm">
                 {cartItems.map((item) => (
                   <li key={item.id} className="flex justify-between">
                     <span>
-                      x{item.quantity} {item.name}
+                      {item.name} × {item.quantity}
                     </span>
-                    <span>৳{(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="font-medium">
+                      ৳{(item.price * item.quantity).toFixed(2)}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -233,11 +183,11 @@ const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
               <Separator />
 
               {/* Shipping Inputs */}
-              <div className="text-sm space-y-2">
-                <p>Delivery Address</p>
+              <div className="text-sm space-y-3">
+                <p className="font-medium">Delivery Address</p>
                 <Input
                   name="shippingAddress"
-                  placeholder="Address"
+                  placeholder="Street address"
                   value={shippingInfo.shippingAddress}
                   onChange={handleChange}
                 />
@@ -251,57 +201,30 @@ const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
 
               <Separator />
 
-              <div className="text-sm flex justify-between">
-                <span>Shipping</span>
-                <span>৳ 60.00</span>
+              <div className="flex justify-between text-sm">
+                <span>Shipping Cost</span>
+                <span className="font-medium">৳ 60.00</span>
               </div>
 
               <Separator />
 
-              <div className="text-base font-semibold flex justify-between">
+              <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
-                <span>৳ {(totalPrice + 60).toFixed(2)}</span>
+                <span className="text-primary">
+                  ৳ {(totalPrice + 60).toFixed(2)}
+                </span>
               </div>
-
-              {/* Prescription Upload */}
-              {cartItems.some((cart) => cart.prescription) && (
-                <div className="mt-6">
-                  {imagePreview.length > 0 ? (
-                    <ImagePreviewer
-                      setImageFiles={setImageFiles}
-                      imagePreview={imagePreview}
-                      setImagePreview={setImagePreview}
-                    />
-                  ) : (
-                    <ImageUploader
-                      setImageFiles={setImageFiles}
-                      setImagePreview={setImagePreview}
-                      label="Upload Prescription"
-                    />
-                  )}
-                </div>
-              )}
-
-              {/* Upload Success Message */}
-              {showMessage && (
-                <small className="text-center block font-semibold text-sm text-green-600">
-                  Image uploaded successfully
-                </small>
-              )}
 
               {/* Checkout Button */}
               {shippingInfo.shippingAddress && shippingInfo.shippingCity ? (
                 <Button
                   onClick={handleSubmit}
-                  disabled={
-                    cartItems.some((cart) => cart.prescription) && !prescription
-                  }
-                  className="w-full bg-yellow-500 hover:bg-yellow-600 text-white"
+                  className="w-full bg-teal-500 hover:bg-teal-600 text-white text-base py-2"
                 >
-                  Checkout
+                  Proceed to Checkout
                 </Button>
               ) : (
-                <p className="text-yellow-600 font-medium text-center">
+                <p className="text-teal-600 font-medium text-center">
                   Shipping Address Required!
                 </p>
               )}
@@ -309,10 +232,17 @@ const Cart = ({ medicines }: { medicines: TMedicineResponse[] }) => {
           </Card>
         </div>
       ) : (
-        <div className=" min-h-[50vh] flex justify-center items-center">
-          <p className="text-black font-semibold text-2xl">
-            No Items in Cart <ShoppingCart size={100} />
+        <div className="min-h-[60vh] flex flex-col justify-center items-center text-center space-y-6">
+          <ShoppingCart size={80} className="text-gray-400" />
+          <p className="text-gray-700 dark:text-gray-200 font-semibold text-2xl">
+            Your cart is empty
           </p>
+          <Button
+            onClick={() => router.push("/shop")}
+            className="bg-teal-500 hover:bg-teal-600 text-white"
+          >
+            Start Shopping
+          </Button>
         </div>
       )}
     </div>
