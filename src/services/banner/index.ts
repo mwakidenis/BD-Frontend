@@ -23,6 +23,40 @@ export const createBanner = async (bannerData: TBanner) => {
   }
 };
 
+// getAllbanner
+export const getAllBanner = async () => {
+  try {
+    const res = await fetch(`${process.env.BASE_API}/banner`, {
+      next: {
+        tags: ["BANNER"],
+      },
+    });
+
+    return await res.json();
+  } catch (error: any) {
+    throw new Error(error.message || "Something went wrong");
+  }
+};
+
+// deletebanner
+export const deleteBanner = async (id: string) => {
+  try {
+    const res = await fetch(`${process.env.BASE_API}/banner/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: (await cookies()).get("accessToken")!.value,
+        "Content-Type": "application/json",
+      },
+    });
+
+    revalidateTag("BANNER");
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
 // imageToLink
 export const imageToLink = async (image: FormData) => {
   try {
