@@ -32,15 +32,9 @@ const items = [
     icon: Image,
   },
   {
-    title: "Manage Products",
+    title: "Manage All Products",
     url: "/superAdmin/products",
     icon: ShoppingBasket,
-  },
-
-  {
-    title: "Manage Orders",
-    url: "/superAdmin/orders",
-    icon: ShoppingBag,
   },
   {
     title: "Manage Users",

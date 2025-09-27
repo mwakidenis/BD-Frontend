@@ -96,11 +96,11 @@ const UserProfileForAdmin = ({
               value={
                 lastOrder.paymentStatus ? (
                   <span className="px-2 py-1 text-xs rounded-full bg-green-600 text-white">
-                    Paid
+                    Unpaid
                   </span>
                 ) : (
                   <span className="px-2 py-1 text-xs rounded-full bg-yellow-600 text-white">
-                    Unpaid
+                    Paid
                   </span>
                 )
               }

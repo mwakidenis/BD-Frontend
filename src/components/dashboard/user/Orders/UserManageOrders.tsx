@@ -159,7 +159,7 @@ const UserManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
             variant="outline"
           >
             <CheckCircle2 className="w-3 h-3 mr-1" />
-            Paid
+            Unpaid
           </Badge>
         ) : (
           <Badge
@@ -167,7 +167,7 @@ const UserManageOrders: React.FC<ManageOrdersProps> = ({ data }) => {
             variant="outline"
           >
             <XCircle className="w-3 h-3 mr-1" />
-            Unpaid
+            Paid
           </Badge>
         ),
     },

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -17,6 +17,8 @@ import {
   Truck,
   CheckCircle,
   ArrowLeft,
+  CarTaxiFrontIcon,
+  ShoppingBag,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -32,13 +34,15 @@ const Checkout = () => {
     totalPrice = 0,
     products = [],
   } = orderInfo;
-  const { user, setIsLoading, isLoading } = useUser();
+  const { user } = useUser();
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
+  const [isCashOnDeliveryLoading, setIsCashOnDeliveryLoading] = useState(false);
 
   const handleOrder = async () => {
     if (!products.length) return;
 
     try {
-      setIsLoading(true);
+      setIsPaymentLoading(true);
 
       const orderedProductInfo = {
         userId: user?.id,
@@ -64,7 +68,41 @@ const Checkout = () => {
     } catch (err: any) {
       console.error(err);
     } finally {
-      setIsLoading(false);
+      setIsPaymentLoading(false);
+    }
+  };
+
+  const handleCashOnDelivery = async () => {
+    if (!products.length) return;
+
+    try {
+      setIsCashOnDeliveryLoading(true);
+
+      const orderedProductInfo = {
+        userId: user?.id,
+        name: user?.name,
+        email: user?.email,
+        products,
+        shippingInfo,
+        shippingCost,
+        totalPrice: Number(totalPrice + shippingCost),
+        orderStatus: "pending",
+        paymentStatus: false,
+      };
+
+      const res = await createOrder(orderedProductInfo);
+
+      if (res?.success) {
+        toast.success(res.message, { duration: 3000 });
+        dispatch(clearCart());
+        router.push("/user/orders");
+      } else {
+        toast.error(res?.message, { duration: 1400 });
+      }
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setIsCashOnDeliveryLoading(false);
     }
   };
 
@@ -335,12 +373,15 @@ const Checkout = () => {
                     </p>
                   </div>
 
+                  {/* pay */}
                   <Button
                     onClick={handleOrder}
-                    disabled={isCartEmpty || isLoading}
+                    disabled={
+                      isCartEmpty || isPaymentLoading || isCashOnDeliveryLoading
+                    }
                     className="w-full py-4 text-lg font-semibold rounded-xl transition-all duration-200 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl"
                   >
-                    {isLoading ? (
+                    {isPaymentLoading ? (
                       <div className="flex items-center justify-center space-x-2">
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         <span>Processing...</span>
@@ -349,6 +390,27 @@ const Checkout = () => {
                       <div className="flex items-center justify-center space-x-2">
                         <CreditCard className="w-5 h-5" />
                         <span>Pay ৳{total.toLocaleString()}</span>
+                      </div>
+                    )}
+                  </Button>
+
+                  {/* cash on delivery */}
+                  <Button
+                    onClick={handleCashOnDelivery}
+                    disabled={
+                      isCartEmpty || isPaymentLoading || isCashOnDeliveryLoading
+                    }
+                    className="w-full my-10 py-4 text-lg font-semibold rounded-xl transition-all duration-200 bg-blue-500 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl"
+                  >
+                    {isCashOnDeliveryLoading ? (
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                        <span>Processing...</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center space-x-2">
+                        <ShoppingBag className="w-5 h-5" />
+                        <span>Cash On Delivery</span>
                       </div>
                     )}
                   </Button>

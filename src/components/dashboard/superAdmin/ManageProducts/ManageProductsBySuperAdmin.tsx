@@ -172,9 +172,9 @@ const ManageProductBySuperAdmin = ({
   return (
     <div>
       <div className="flex items-center justify-end my-4">
-        <Link href="/admin/create-product">
+        {/* <Link href="/admin/create-product">
           <Button>Create Product</Button>
-        </Link>
+        </Link> */}
       </div>
       <div className="w-1/2 mx-auto">
         <ProductSearchbar />
