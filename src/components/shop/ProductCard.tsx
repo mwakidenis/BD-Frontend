@@ -168,19 +168,6 @@ export default function ProductCard({
             </div>
           </div>
 
-          {/* Description */}
-          {/* <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3 flex-grow leading-relaxed">
-            {description.length > 80
-              ? `${description.slice(0, 80)}...`
-              : description}
-          </p> */}
-
-          {/* Expiry Date */}
-          {/* <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-            <Calendar size={14} />
-            <span className="font-medium">Exp: {expireDate}</span>
-          </div> */}
-
           {/* Action Buttons */}
           <div className="flex items-center justify-between gap-3 pt-2">
             <Link href={`/product/${_id}`} className="flex-1">

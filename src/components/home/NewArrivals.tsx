@@ -2,10 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { getAllProduct } from "@/services/product";
 import { TProductResponse } from "@/types/product";
 import Link from "next/link";
+import { useAppDispatch } from "@/redux/hooks";
+import { addItemToCart } from "@/redux/features/cartSlice";
+import { toast } from "sonner";
+import { useUser } from "@/context/UserContext";
 
 type ProductCardProps = {
   product: TProductResponse;
@@ -14,6 +18,11 @@ type ProductCardProps = {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
   const [hover, setHover] = useState(false);
+  const [showCartIcon, setShowCartIcon] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
+  const { user } = useUser();
 
   const discountedPrice =
     product.discount > 0
@@ -28,6 +37,35 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
       : "Available";
 
   const isOutOfStock = !product.inStock || product.quantity === 0;
+
+  const handleAddToCart = () => {
+    dispatch(
+      addItemToCart({
+        id: product._id,
+        name: product.name,
+        quantity: 1,
+        price: product.price,
+        image: product.imageUrl[0],
+        description: product.description,
+        category: product.category,
+      })
+    );
+
+    toast.success(`${product.name} added to cart!`, { duration: 1000 });
+  };
+
+  const handleClick = async () => {
+    if (isOutOfStock) return;
+
+    setIsLoading(true);
+    handleAddToCart();
+    setShowCartIcon(false);
+
+    setTimeout(() => {
+      setShowCartIcon(true);
+      setIsLoading(false);
+    }, 1000);
+  };
 
   return (
     <motion.div
@@ -131,21 +169,63 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
           </button>
         </Link>
 
-        <button
-          disabled={isOutOfStock}
-          className={`w-[80%] border border-white bg-transparent text-white cursor-pointer flex items-center justify-center gap-2 ${
-            hover ? "h-[40px] text-base" : "w-0 h-0 text-[0px] border-none"
-          } duration-[.5s] hover:bg-white hover:text-black ${
-            isOutOfStock
-              ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-white"
-              : ""
-          }`}
-        >
-          <ShoppingCart
-            className={`${hover ? "w-4 h-4" : "w-0 h-0"} duration-300`}
-          />
-          {isOutOfStock ? "Unavailable" : "Add To Cart"}
-        </button>
+        {user?.role !== "admin" && (
+          <div className="w-[80%] relative">
+            <AnimatePresence mode="wait">
+              {showCartIcon && (
+                <motion.button
+                  key="cart-button"
+                  onClick={handleClick}
+                  disabled={isLoading || isOutOfStock}
+                  initial={{ opacity: 1, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8, rotate: 360 }}
+                  transition={{ duration: 0.3 }}
+                  className={`w-full border border-white bg-transparent text-white cursor-pointer flex items-center justify-center gap-2 ${
+                    hover
+                      ? "h-[40px] text-base"
+                      : "w-0 h-0 text-[0px] border-none"
+                  } duration-[.5s] hover:bg-white hover:text-black ${
+                    isOutOfStock
+                      ? "opacity-50 cursor-not-allowed hover:bg-transparent hover:text-white"
+                      : ""
+                  }`}
+                >
+                  <motion.div
+                    animate={isLoading ? { rotate: 360 } : { rotate: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      repeat: isLoading ? Infinity : 0,
+                    }}
+                  >
+                    <ShoppingCart
+                      className={`${
+                        hover ? "w-4 h-4" : "w-0 h-0"
+                      } duration-300`}
+                    />
+                  </motion.div>
+                  {isOutOfStock ? "Unavailable" : "Add To Cart"}
+                </motion.button>
+              )}
+            </AnimatePresence>
+
+            {!showCartIcon && hover && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="absolute inset-0 bg-green-700 flex items-center justify-center text-white h-[40px]"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  ✓
+                </motion.div>
+              </motion.div>
+            )}
+          </div>
+        )}
       </div>
     </motion.div>
   );
