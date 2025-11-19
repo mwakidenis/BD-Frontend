@@ -10,7 +10,6 @@ const initialState: ICartState = {
     shippingAddress: "",
     shippingCity: "",
   },
-  prescriptionImage: "",
   shippingCost: 60,
 };
 
@@ -71,14 +70,10 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalQuantity = 0;
       state.totalPrice = 0;
-      state.prescriptionImage = "";
     },
 
     addOrderInfo: (state, action) => {
       state.shippingInfo = action.payload.shippingInfo;
-    },
-    addPrescription: (state, action) => {
-      state.prescriptionImage = action.payload;
     },
   },
 });
@@ -94,12 +89,10 @@ export const orderSelector = (state: RootState) => {
       quantity: product.quantity,
       name: product.name,
       price: product.price,
-      requiredPrescription: product.prescription,
     })),
     shippingInfo: state.cart.shippingInfo,
     shippingCost: state.cart.shippingCost,
     totalPrice: state.cart.totalPrice,
-    prescription: state.cart.prescriptionImage,
   };
 };
 
@@ -119,7 +112,6 @@ export const cartSelector = (state: RootState) => state.cart;
 export const {
   addItemToCart,
   removeItemFromCart,
-  addPrescription,
   clearCart,
   increaseQuanity,
   decreaseQuanity,
