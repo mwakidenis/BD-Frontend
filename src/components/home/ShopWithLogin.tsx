@@ -51,7 +51,7 @@ const ShopNow = () => {
             height={300}
             width={500}
             alt="ShopNowImg"
-            src="https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/520284469_122104977080973943_5059480252296765432_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGT4UX8PzjvbUAfwML3ucvHhL22xYyiH3uEvbbFjKIfe5f_O_Dmo2rHlVISiux8dIf5bIkE790AD9RWlvv5sCrn&_nc_ohc=m8c47pOqIpwQ7kNvwEaze63&_nc_oc=AdlJE-PGu6Pzv63U_uMdVC5PO3fR3opIsYHF32z5RUbHagPZEZKU_AxHmPfYW01KPzc&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=NqlVoMfF0v0VTFXPc0QMOA&oh=00_AfYffTXs_bLyQjU_EEEZFQ94BHYvFIxhs05x2EAR1DSS8A&oe=68C07A49"
+            src="https://i.ibb.co.com/YFLNf7f8/520284469-122104977080973943-5059480252296765432-n.jpg"
             className="h-full w-full object-cover z-0"
           />
         </div>

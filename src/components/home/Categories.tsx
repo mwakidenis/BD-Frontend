@@ -24,7 +24,7 @@ const fakeServices = [
     description:
       "Durable and eco-friendly jute rugs that bring natural elegance to your floors.",
     image:
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/540590300_122114086406973943_3314017149461766343_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHN59cMt_Lm0JZolYJkRhItplW3H-Z92PumVbcf5n3Y-2WErCT4AVQxQWySXwQ35yD7zA3FhZ1dluh_dPrd7rIR&_nc_ohc=4gRPJ-oAIuEQ7kNvwEGkFo0&_nc_oc=AdnlxP89avNCRWJ4LKTucubjoy9jkMaBc3lIeEOwX31coUCYIpaIjLfYhdDMAmoDW7o&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=C8y_OP5PNiuztkIgkUWi9g&oh=00_AfYWosq6xZLka1bd2HcKKikLu0HZA7Tpw17RfndXDJtEsA&oe=68C9FE0A",
+      "https://i.ibb.co.com/Xf4tFkwZ/534522030-122104364474973943-2085270456894943289-n.jpg",
   },
   {
     id: "2",
@@ -32,7 +32,7 @@ const fakeServices = [
     description:
       "Soft and vibrant cotton mats designed to brighten up bedrooms and living spaces.",
     image:
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/532083747_122104365644973943_2391280419084169710_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeG-emQ2LZTAFvUqYrx0t_T0_8DUEIhqXff_wNQQiGpd9_a7gun9-0Wa0R56D49zIxHH7nM7JQZL17jQtsTXxa7V&_nc_ohc=j365DEVbML8Q7kNvwGkRXZL&_nc_oc=AdmvbnL0BiovxApVaiat--zn3U41oCJCrdDnTHt_kPKc0jMpn9n8jIwOAQ_L5S-oLG4&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=k5gdBWtLWZFJ-Z820oliPg&oh=00_AfY30CNShk5r0ZhoXpil5x9K-HCelUChBnBkHCGMTJoxAQ&oe=68C9F5F7",
+      "https://i.ibb.co.com/4Rft2RMp/559377095-122129040440973943-3785180031404989496-n.jpg",
   },
   {
     id: "3",
@@ -40,7 +40,7 @@ const fakeServices = [
     description:
       "Modern geometric designs that combine comfort with a stylish look.",
     image:
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/536270152_122106312842973943_9042513676787082582_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeGhN8MUL0UUNHYp_fraBYq0P2xLJAW0wrA_bEskBbTCsPkMR15byC6H26o3Q1rFJ0NiH29DRxDBhR7JKFIbJUtM&_nc_ohc=KnxGZLNs2j4Q7kNvwFof-qH&_nc_oc=AdnEM5TqHy2lsUu3MkxJ_91YsDdNv6Q5QQkRaqn9afmaj2qUP0ugRKR2HuU8pODJl4k&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=BLkq2VRLgNvUWrQlGanndw&oh=00_AfZfPqO3R-7Kf5b1vmvcWcOeo883BTaUudAAJIk-i-AliA&oe=68CA0DD8",
+      "https://i.ibb.co.com/kg2JXjbg/536278566-122106312656973943-6333669654772770161-n.jpg",
   },
   {
     id: "4",
@@ -48,7 +48,7 @@ const fakeServices = [
     description:
       "Celebrate heritage with beautifully woven, traditional handmade pieces.",
     image:
-      "https://scontent.fspd6-1.fna.fbcdn.net/v/t39.30808-6/533106420_122104976312973943_4551989155769631010_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeF-_zGqHtcF0KI9RtxuqR-2HZkmswz_CCEdmSazDP8IIYVRV5fqXTuk-WBlQtoIIUmXytX-XgCPj87Uhb-jy_gh&_nc_ohc=pZcK-L_NIhQQ7kNvwHMtita&_nc_oc=AdkwqScbFDbuDgpXYFgtv0Cy9rCHdTN75FCEF0v-suHX7Yvf6zlIRrXFACCI-H3Gzd8&_nc_zt=23&_nc_ht=scontent.fspd6-1.fna&_nc_gid=4GT0GBntqiu2BeAtxFM6wg&oh=00_AfYJvbzfQ6L5jznidgSXoRVlAZfL09FLy76vOcfh3-O5sQ&oe=68CA03DB",
+      "https://i.ibb.co.com/6c8fk3YV/540590300-122114086406973943-3314017149461766343-n.jpg",
   },
 ];
 
