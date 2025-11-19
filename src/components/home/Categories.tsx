@@ -1,20 +1,19 @@
 "use client";
-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
-  ArrowLeft,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
+// Type for Slider ref - using any to avoid type conflicts with react-slick
+type SliderRef = any;
 
 // Fake SoptokBD services data
 const fakeServices = [
@@ -54,11 +53,11 @@ const fakeServices = [
 
 export default function Categories() {
   const [hoveredIndex, setHoveredIndex] = useState<string | null>(null);
-  const sliderRef = useRef<Slider | null>(null);
+  const sliderRef = useRef<SliderRef>(null);
 
   const settings = {
-    dots: false, // disable dots
-    arrows: false, // disable default arrows
+    dots: false,
+    arrows: false,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
@@ -68,93 +67,88 @@ export default function Categories() {
     pauseOnHover: true,
     focusOnSelect: true,
     responsive: [
-      { breakpoint: 1024, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-      { breakpoint: 768, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 2, slidesToScroll: 1 },
+      },
+      {
+        breakpoint: 768,
+        settings: { slidesToShow: 1, slidesToScroll: 1 },
+      },
     ],
   };
 
   return (
-    <div className="relative py-12 px-6 md:px-20 my-9">
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1d1b20] mb-10">
-        Demo Categories
-      </h2>
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 py-8 sm:py-12 md:py-16 lg:py-20">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 md:mb-5">
+            Demo Categories
+          </h2>
+        </div>
 
-      <Slider ref={sliderRef} {...settings}>
-        {fakeServices.map((service, index) => (
-          <motion.div
-            key={service.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            viewport={{ once: true }}
-            className="px-4"
-          >
-            <div className="overflow-hidden border border-gray-200 bg-white shadow-md">
-              <Image
-                src={service.image}
-                alt={service.title}
-                width={500}
-                height={300}
-                className="w-full h-64 object-cover"
-              />
-              <div className="p-6">
-                <Link href={`/`}>
-                  <button
+        {/* Slider Section */}
+        <div className="relative">
+          <Slider ref={sliderRef} {...settings}>
+            {fakeServices.map((service) => (
+              <div key={service.id} className="px-2 sm:px-3 md:px-4">
+                <div className="relative group">
+                  {/* Image Container */}
+                  <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] md:aspect-square overflow-hidden rounded-lg">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+
+                  {/* Arrow Button */}
+                  <div
                     onMouseEnter={() => setHoveredIndex(service.id)}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    className="w-12 h-12 rounded-full border border-gray-500 flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 mx-auto my-5 cursor-pointer"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-gray-500 flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 mx-auto my-4 sm:my-5 cursor-pointer"
                   >
-                    <AnimatePresence mode="wait" initial={false}>
-                      {hoveredIndex === service.id ? (
-                        <motion.div
-                          key="arrow-right"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <ArrowRight size={20} />
-                        </motion.div>
-                      ) : (
-                        <motion.div
-                          key="arrow-up-right"
-                          initial={{ opacity: 0, y: -5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 5 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <ArrowUpRight size={20} />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </button>
-                </Link>
-                <h3 className="text-xl font-semibold mb-2 text-black text-center">
-                  {service.title}
-                </h3>
-                <p className="text-gray-700 text-center">
-                  {service.description}
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </Slider>
+                    {hoveredIndex === service.id ? (
+                      <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                    ) : (
+                      <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                    )}
+                  </div>
 
-      {/* Custom arrows */}
-      <div className="flex gap-3 justify-center my-5">
-        <button
-          onClick={() => sliderRef.current?.slickPrev()}
-          className="size-10 rounded-full border border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer"
-        >
-          <ChevronLeft size={18} />
-        </button>
-        <button
-          onClick={() => sliderRef.current?.slickNext()}
-          className="size-10 rounded-full border border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer"
-        >
-          <ChevronRight size={18} />
-        </button>
+                  {/* Text Content */}
+                  <div className="text-center px-2 sm:px-4">
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mb-2 sm:mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                      {service.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </Slider>
+
+          {/* Custom Navigation Arrows */}
+          <div className="flex justify-center items-center gap-3 sm:gap-4 mt-8 sm:mt-10 md:mt-12">
+            <button
+              onClick={() => sliderRef.current?.slickPrev()}
+              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+            </button>
+            <button
+              onClick={() => sliderRef.current?.slickNext()}
+              className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full border border-black bg-white flex items-center justify-center hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
