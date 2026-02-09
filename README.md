@@ -1,6 +1,6 @@
 # SoptokBD-Frontend
 
-** Live Link **: [Ishtiak Ahmed](https://soptokbd.vercel.app/)
+Live Link: [SoptokBD](https://soptokbd.vercel.app/)
 
 ## Super Admin
 
